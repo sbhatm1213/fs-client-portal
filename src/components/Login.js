@@ -14,14 +14,14 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize navigate object
 
 //  const { signInWithGoogle } = useAuth();
-  const { user, signInWithGoogle, signInWithGithub, signOut } = useAuth();
+  const { user, signInWithGoogle, signInWithAzure, signOut } = useAuth();
 
   const handleGoogleLogin = async () => {
     await signInWithGoogle();
   };
 
-  const handleGithubLogin = async () => {
-    await signInWithGithub();
+  const handleAzureLogin = async () => {
+    await signInWithAzure();
   };
 
   return (
@@ -57,29 +57,9 @@ const Login = () => {
           <Grid item xs={12}>
             <Button
               variant="contained"
-              color="primary"
-              fullWidth
-              onClick={() => handleGithubLogin('github')}
-              sx={{
-                borderRadius: '8px',
-                textTransform: 'none',
-                padding: '10px',
-                boxShadow: 'none',
-                '&:hover': {
-                  boxShadow: '0px 4px 15px rgba(0,0,0,0.2)',
-                },
-              }}
-              startIcon={<GitHubIcon />} // Add GitHub icon
-            >
-              Login with GitHub
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
               color="primary" // Use a suitable color
               fullWidth
-              onClick={() => handleGoogleLogin('azure')} // Adjust according to your Azure setup
+              onClick={() => handleAzureLogin('azure')} // Adjust according to your Azure setup
               sx={{
                 borderRadius: '8px',
                 textTransform: 'none',

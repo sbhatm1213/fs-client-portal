@@ -1,32 +1,49 @@
 // /src/components/HomePage.js
 import React, {useEffect} from 'react';
-import { Container, Typography, Button, Grid, Card, CardContent, Box } from '@mui/material';
+import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent, Box } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { supabase } from '../services/supabaseClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import MsspComponent  from './MsspComponent.js'
+
+
+const theme = createTheme({
+    palette: {
+        card: {
+            main: '#11609f',
+            contrastText: '#eff8f9',
+        },
+    },
+});
 
 
 const HomePage = () => {
 
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
+//  const { user, signOut } = useAuth();
+//  const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await signOut();
-    navigate('/login');
-  };
+//  const handleLogout = async () => {
+//    await signOut();
+//    navigate('/login');
+//  };
 
   return (
     <Container>
+      <AppBar position="fixed" sx={{ backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">
+          Welcome to Your Dashboard
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-    {user ? (
         <>
       <Box sx={{ textAlign: 'center', my: 4 }}>
         <Typography variant="h3" component="h1" gutterBottom>
-          Welcome to Your Dashboard
         </Typography>
         <Typography variant="h6" color="textSecondary">
-          This is a random homepage built with Material-UI and React : {user.email}
+          Loggined in as : user.email
         </Typography>
       </Box>
 
@@ -44,65 +61,19 @@ const HomePage = () => {
       </Grid>
 
       <Grid container spacing={4} my={4}>
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                Feature One
-              </Typography>
-              <Typography color="textSecondary">
-                Description of the first feature. Random text to illustrate a feature of the application.
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                Feature Two
-              </Typography>
-              <Typography color="textSecondary">
-                Description of the second feature. More random text for the feature description.
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                Feature Three
-              </Typography>
-              <Typography color="textSecondary">
-                Description of the third feature. Even more random text to showcase another feature.
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        <MsspComponent />
       </Grid>
 
       <Box sx={{ textAlign: 'center', mt: 5 }}>
           <Grid item xs={12} md={4}>
-            <Button variant="contained" color="primary" onClick={handleLogout}>
+            <Button variant="contained" color="primary">
                 Logout
             </Button>
           </Grid>
       </Box>
       </>
-    ) : (
-        <Box sx={{ textAlign: 'center', mt: 5 }}>
-          <Grid item xs={12} md={4}>
-            <Card>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                Redirecting to login...
-              </Typography>
-            </CardContent>
-            </Card>
-          </Grid>
-      </Box>
-      )}
+
+
     </Container>
   );
 };

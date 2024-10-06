@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signInWithGithub = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'github' });
+  const signInWithAzure = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({ provider: 'azure' });
     if (error) {
       console.error('Login error:', error.message);
     }
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithAzure, signOut }}>
       {children}
     </AuthContext.Provider>
   );
