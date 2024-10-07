@@ -5,8 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { supabase } from '../services/supabaseClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import MspComponent  from './MsspComponent.js'
-
+import MspComponent  from './MspComponent.js'
 
 
 const theme = createTheme({
@@ -18,7 +17,7 @@ const theme = createTheme({
     },
 });
 
-const MsspCardComponent = ({mssp}) => {
+const MsspCardComponent = ({mssp, onClickMssp}) => {
 
     const [selectedMsspId, setSelectedMsspId] = useState(null);
     const [msps, setMsps] = useState([]);
@@ -26,6 +25,8 @@ const MsspCardComponent = ({mssp}) => {
     const [error, setError] = useState(null);
 
 
+
+/*
     const fetchMspForMssp = async (msspId) => {
         setSelectedMsspId(msspId); // Set the selected MSSP ID
         try {
@@ -47,25 +48,36 @@ const MsspCardComponent = ({mssp}) => {
         } catch (error) {
             console.error('Error fetching MSPs:', error.message);
         }
-    };
+    };*/
 
-//    const fetchMspForMssp = (msspId) => {
-//                setSelectedMsspId(msspId); // Set the selected MSSP ID
-//
-//    }
+    const fetchMspForMssp = (mssp) => {
+                setSelectedMsspId(mssp.mssp_id); // Set the selected MSSP ID
+                onClickMssp(mssp);
+    }
 
 
     return (
     <>
         <Card sx={{ backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}
-              onClick={() => fetchMspForMssp(mssp.mssp_id)}>
+              onClick={() => fetchMspForMssp(mssp)}>
             <CardContent>
               <Typography variant="h5" component="h2">
                 {mssp.mssp_name}
               </Typography>
             </CardContent>
         </Card>
-            {selectedMsspId &&
+    </>
+    )
+}
+
+
+export default MsspCardComponent;
+
+//        {selectedMsspId && <MspComponent msspId={selectedMsspId} />}
+
+/*
+
+{selectedMsspId &&
             (
 
                 <Table>
@@ -73,17 +85,9 @@ const MsspCardComponent = ({mssp}) => {
                     {msps.map((msp, idx) => (
                       <TableRow key={idx}>
                         <TableCell>{msp.msp.msp_name}</TableCell>
-                        {/* Add more TableCell elements here if needed for other properties */}
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
             )
-            }
-    </>
-    )
-}
-
-
-export default MsspCardComponent;
-//            {selectedMsspId && <MspComponent msspId={selectedMsspId} />}
+            }*/

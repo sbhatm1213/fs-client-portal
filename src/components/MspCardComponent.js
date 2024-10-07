@@ -18,7 +18,7 @@ const theme = createTheme({
     },
 });
 
-const MspCardComponent = ({msp}) => {
+const MspCardComponent = ({msp, onClickMsp}) => {
 
     const [selectedMspId, setSelectedMspId] = useState(null);
 
@@ -44,21 +44,20 @@ const MspCardComponent = ({msp}) => {
 //        }
 //    };
 
-    const fetchMspForMsp = (mspId) => {
-                setSelectedMspId(msspId); // Set the selected MSSP ID
-
+    const fetchLicensesForMsp = (mspId) => {
+                setSelectedMspId(mspId);
+                onClickMsp(msp);
     }
 
 
     return (
         <Card sx={{ backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}
-              onClick={() => fetchMspForMsp(msp.msp_id)}>
+              onClick={() => fetchLicensesForMsp(msp.msp_id)}>
             <CardContent>
               <Typography variant="h5" component="h2">
                 {msp.msp_name}
               </Typography>
             </CardContent>
-            {selectedMspId && <MspComponent mspId={selectedMspId} />}
 
         </Card>
     )

@@ -4,7 +4,7 @@ import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { supabase } from '../services/supabaseClient';
 import { useAuth } from '../services/AuthProvider';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MspCardComponent from './MspCardComponent.js';
 
 
@@ -18,11 +18,8 @@ const theme = createTheme({
 });
 
 
-const MspComponent = () => {
+const MspComponent = ({msspId, onClickMsp}) => {
 
-    const { msspId } = useParams();
-
-    console.log(msspId);
     const [msps, setMsps] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -34,7 +31,7 @@ const MspComponent = () => {
                 .from('msp_mssp')
                 .select(
                     `
-                    msp!inner(msp_name),
+                    msp!inner(msp_id, msp_name),
                     mssp!inner(mssp_name)
                     `,
                 )
@@ -42,26 +39,30 @@ const MspComponent = () => {
 
             if (error) throw error;
             console.log(data);
-            return data;
+//            return data;
+            setMsps(data);
         } catch (error) {
             console.error('Error fetching MSPs:', error.message);
         }
     };
 
     useEffect(() => {
-        console.log(msspId);
-        fetchMsps(msspId);
+        fetchMspForMssp(msspId);
     }, [msspId]);
 
 
     return (<ThemeProvider theme={theme}>
-        {msps.map(msp => (
-            <Grid item xs={12} md={4} key={msp.msp_id}>
+        {
+
+            msps.map(msp => (
+            <Grid item xs={12} md={4} key={msp.msp.msp_id}>
                 <MspCardComponent
-                msp={msp}
+                msp={msp.msp}
+                onClickMsp={onClickMsp}
                 />
             </Grid>
-        ))}
+            ))
+        }
        </ThemeProvider>)
 };
 

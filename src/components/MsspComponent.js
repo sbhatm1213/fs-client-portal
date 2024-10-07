@@ -18,7 +18,7 @@ const theme = createTheme({
 });
 
 
-const MsspComponent = () => {
+const MsspComponent = ({onClickMssp}) => {
 
     const [mssps, setMssps] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -54,6 +54,7 @@ const MsspComponent = () => {
             <Grid item xs={12} md={4} key={mssp.mssp_id}>
                 <MsspCardComponent
                 mssp={mssp}
+                onClickMssp={onClickMssp}
                 />
             </Grid>
         ))}
