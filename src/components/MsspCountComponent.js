@@ -1,29 +1,45 @@
-// /src/components/MsspCardComponent.js
+// /src/components/MsspCountComponent.js
 import React, {useEffect, useState} from 'react';
 import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent, Box, TableBody, TableRow, TableCell, Table } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { supabase } from '../services/supabaseClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import MspComponent  from './MspComponent.js'
+import theme from '../theme.js';
 
 
-const theme = createTheme({
-    palette: {
-        card: {
-            main: '#11609f',
-            contrastText: '#eff8f9',
-        },
-    },
-});
+const MsspCountComponent = () => {
 
-const MsspCardComponent = ({mssp, onClickMssp}) => {
-
+    const [msspCount, setMsspCount] = useState(null);
     const [selectedMsspId, setSelectedMsspId] = useState(null);
     const [msps, setMsps] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const getCountMssps = async () => {
+           try {
+                const { data, error } = await supabase
+                    .from('mssp')
+                    .select('count', { count: 'exact' });
+
+                if (error) {
+                    console.log(error);
+//                    throw error;
+                }
+
+                setMsspCount(data[0].count);
+          } catch (error) {
+                console.log(error);
+                setError(error.message);
+          } finally {
+                setLoading(false);
+          }
+
+    }
+
+    useEffect(() => {
+        getCountMssps();
+    }, []);
 
 
 /*
@@ -50,28 +66,37 @@ const MsspCardComponent = ({mssp, onClickMssp}) => {
         }
     };*/
 
-    const fetchMspForMssp = (mssp) => {
-                setSelectedMsspId(mssp.mssp_id); // Set the selected MSSP ID
-                onClickMssp(mssp);
-    }
+//    const fetchMspForMssp = (mssp) => {
+//                setSelectedMsspId(mssp.mssp_id); // Set the selected MSSP ID
+//                onClickMssp(mssp);
+//                getCountMssps();
+//
+//    }
 
 
     return (
-    <>
-        <Card sx={{ backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}
-              onClick={() => fetchMspForMssp(mssp)}>
+        <Box mt={4} sx={{flex: 1}}>
+
+        <Card sx={{ backgroundColor: theme.palette.card.main,
+                    color: theme.palette.card.contrastText,
+                    maxWidth: theme.palette.card.maxWidth }} >
             <CardContent>
-              <Typography variant="h5" component="h2">
-                {mssp.mssp_name}
+              <Typography variant="h4">
+                  {msspCount}
+                </Typography>
+                <Typography variant="h6">
+                  Total MSSP(s)
               </Typography>
+              <Typography variant="body2"></Typography>
+
             </CardContent>
         </Card>
-    </>
+        </Box>
     )
 }
 
 
-export default MsspCardComponent;
+export default MsspCountComponent;
 
 //        {selectedMsspId && <MspComponent msspId={selectedMsspId} />}
 

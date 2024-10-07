@@ -1,20 +1,11 @@
 // /src/components/LicensesTableComponent.js
 import React, {useEffect, useState} from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { supabase } from '../services/supabaseClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate, useParams } from 'react-router-dom';
-
-
-const theme = createTheme({
-    palette: {
-        card: {
-            main: '#11609f',
-            contrastText: '#eff8f9',
-        },
-    },
-});
+import theme from '../theme.js';
 
 
 const LicensesTableComponent = ({mspId, onClickMsp}) => {

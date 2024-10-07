@@ -1,22 +1,13 @@
-// /src/components/MsspCardComponent.js
+// /src/components/MspCardComponent.js
 import React, {useEffect, useState} from 'react';
 import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent, Box } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { supabase } from '../services/supabaseClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import theme from '../theme.js';
 import MspComponent  from './MspComponent.js'
 
-
-
-const theme = createTheme({
-    palette: {
-        card: {
-            main: '#11609f',
-            contrastText: '#eff8f9',
-        },
-    },
-});
 
 const MspCardComponent = ({msp, onClickMsp}) => {
 
@@ -58,7 +49,6 @@ const MspCardComponent = ({msp, onClickMsp}) => {
                 {msp.msp_name}
               </Typography>
             </CardContent>
-
         </Card>
     )
 }
