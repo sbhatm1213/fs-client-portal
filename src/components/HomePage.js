@@ -47,30 +47,12 @@ const HomePage = () => {
         </Typography>
       </Box>
 
-      <Grid container spacing={2} justifyContent="center">
-        <Grid item>
-          <Button variant="contained" color="primary">
-            Primary Action
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="secondary">
-            Secondary Action
-          </Button>
-        </Grid>
-      </Grid>
 
       <Grid container spacing={4} my={4}>
         <MsspComponent />
       </Grid>
 
-      <Box sx={{ textAlign: 'center', mt: 5 }}>
-          <Grid item xs={12} md={4}>
-            <Button variant="contained" color="primary">
-                Logout
-            </Button>
-          </Grid>
-      </Box>
+
       </>
 
 
