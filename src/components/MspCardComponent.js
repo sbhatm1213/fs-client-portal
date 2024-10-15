@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent, Box } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { supabase } from '../services/supabaseClient';
+//import { supabase } from '../services/supabaseClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import theme from '../theme.js';

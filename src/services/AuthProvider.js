@@ -1,52 +1,51 @@
 // src/services/AuthProvider.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { supabase } from '../services/supabaseClient'; // Adjust the path as necessary
+//import { supabase } from '../services/supabaseClient'; // Adjust the path as necessary
+import { Account } from 'appwrite';
+import { client } from './appwriteClient';
 
 const AuthContext = createContext();
+const account = new Account(client);
+
 
 export const AuthProvider = ({ children }) => {
+
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
-    const fetchSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
+    const checkUser = async () => {
+      try {
+        const userData = await account.get();
+        setUser(userData);
+      } catch (error) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchSession();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
+    checkUser();
   }, []);
 
 
   const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
-    if (error) {
-      console.error('Login error:', error.message);
-    }
+          await account.createOAuth2Session('google', 'http://localhost:3000', 'http://localhost:3000');
   };
 
   const signInWithAzure = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'azure' });
-    if (error) {
-      console.error('Login error:', error.message);
-    }
+          await account.createOAuth2Session('azure', 'http://localhost:3000', 'http://localhost:3000');
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    await account.deleteSession('current');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithAzure, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signInWithAzure, signOut }}>
       {children}
     </AuthContext.Provider>
   );

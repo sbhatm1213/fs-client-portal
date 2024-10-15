@@ -1,8 +1,12 @@
 // /src/components/HomePage.js
 import React, {useEffect, useState} from 'react';
-import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent, Box, Drawer, Breadcrumbs, Link, List, ListItem,ListItemText } from '@mui/material';
+import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent, Tooltip, Divider } from '@mui/material';
+import { Box, Drawer, Breadcrumbs, Link, List, ListItem, ListItemText, IconButton, ListItemButton, ListItemIcon } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { supabase } from '../services/supabaseClient';
+import { AccountCircle, Security } from '@mui/icons-material';
+import { Query } from 'appwrite';
+//import { supabase } from '../services/supabaseClient';
+import { databases } from '../services/appwriteClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import theme from '../theme.js';
@@ -10,94 +14,170 @@ import MsspCountComponent from './MsspCountComponent.js'
 import MspCountComponent from './MspCountComponent.js'
 import ClientCountComponent from './ClientCountComponent.js'
 import MsspComponent  from './MsspComponent.js'
+import PaginatedMspTable  from './PaginatedMspTable.js'
 import MspComponent  from './MspComponent.js'
-import LicensesTableComponent  from './LicensesTableComponent.js'
+//import LicensesTableComponent  from './LicensesTableComponent.js'
 
 
 const HomePage = () => {
 
-//  const { user, signOut } = useAuth();
+  const { user, signOut } = useAuth();
+//  console.log(user);
 //  const navigate = useNavigate();
-
+//
 //  const handleLogout = async () => {
 //    await signOut();
 //    navigate('/login');
 //  };
 
-    const [mssp, setMssp] = useState(null);
-    const [msp, setMsp] = useState(null);
+    const [userRole, setUserRole] = useState('');
+    const [showAllMssp, setShowAllMssp] = useState(true);
+    const [selectedMssp, setSelectedMssp] = useState(null);
+    const [mspList, setMspList] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const databaseID = process.env.REACT_APP_APPWRITE_DATABASE_ID;
+    const userProfCollectionID = process.env.REACT_APP_APPWRITE_USERPROF_COLLECTION_ID;
+    const msspCollectionID = process.env.REACT_APP_APPWRITE_MSSP_COLLECTION_ID;
 
-  const unsetMssp = () => {
-    setMssp(null);
-  };
+      const unsetSelectedMssp = () => {
+        setSelectedMssp(null);
+      };
 
-  // Function to handle data from Msp
-  const handleMspClick = (clickedMsp) => {
-    console.log('HEYYYYYYYY');
-    console.log(clickedMsp);
-    setMsp(clickedMsp);
-  };
+      // Function to handle data from Mssp
+      const handleMsspClick = (clickedMssp, mspIdList) => {
+        console.log('handleMsspClick  >>  '+clickedMssp+ '  >>  ' + mspIdList);
+        unsetSelectedMssp();
+        setSelectedMssp(clickedMssp);
+        setMspList(mspIdList);
+      };
 
-  const unsetMsp = () => {
-    setMsp(null);
-  };
+
+    const getUserProfiles = async () => {
+           try {
+                databases.listDocuments(
+                        databaseID,
+                        userProfCollectionID,
+                        [Query.equal('email', user.email)], // Using Query object for filtering
+                        1
+                        ).then(response => {
+                        let loggedInUserRole = response.documents[0].role;
+//                    console.log(loggedInUserRole); // Access documents here
+                    setUserRole(loggedInUserRole);
+                    if (loggedInUserRole === 'mssp'){
+//                        console.log(response.documents[0].mssp_id); // Access documents here
+
+                        let msspQueryId = response.documents[0].mssp_id;
+                            if (msspQueryId){
+                                    databases.listDocuments(
+                                        databaseID,
+                                        msspCollectionID,
+                                        [Query.equal('$id', msspQueryId)],
+                                        1
+                                        ).then(msspresponse => {
+//                                    console.log(msspresponse.documents); // Access documents here
+                                    setSelectedMssp(msspQueryId);
+                                    setMspList(msspresponse.documents[0].msp);
+                                  })
+                                  .catch(error => {
+                                    console.error(error);
+                                  });
+                                  }
+                    }
+                  })
+                  .catch(error => {
+                    console.error(error);
+                  });
+
+          } catch (error) {
+                console.log(error);
+                setError(error.message);
+          } finally {
+                setLoading(false);
+          }
+
+    }
+
+    useEffect(() => {
+        getUserProfiles();
+    }, []);
+
 
 
   return (
 
-  <Grid container direction="column" sx={{ minHeight: '100vh' }}>
+  <Grid container direction="column" sx={{ minHeight: '80vh' }}>
       {/* AppBar at the top */}
       <Grid item xs={12}>
         <AppBar position="static"  sx={{ backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
           <Toolbar>
-            <Typography variant="h6">FS Client Portal</Typography>
+            <Typography variant="h6"  style={{ flexGrow: 1 }} >FS Client Portal</Typography>
+            <Tooltip title={user.name} arrow>
+            <IconButton color="inherit" onClick={() => console.log('Profile clicked')}>
+                <AccountCircle />
+          </IconButton>
+          </Tooltip>
           </Toolbar>
         </AppBar>
       </Grid>
 
-    <Grid container style={{ marginTop: '64px' }}>
+    <Grid container >
       {/* Left Sidebar */}
         <Grid item xs={2}>
-          <List>
-            {['', '', ''].map((text) => (
-              <ListItem  key={text}>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
+          <Box sx={{ width: '100%', maxWidth: 360  }}>
+              <List component="nav" key='heimdal_id'>
+                <ListItemButton selected={true} >
+                  <ListItemIcon>
+                    <Security />
+                  </ListItemIcon>
+                  <ListItemText primary='Heimdal' />
+                </ListItemButton>
+              </List>
+              <Divider />
+          </Box>
         </Grid>
 
       {/* Main content area */}
+
       <Grid item xs={10} sx={{ flexGrow: 1, p: 2 }}>
         <Box component="main" display="flex">
-          <MsspCountComponent />
-          <MspCountComponent />
-          <ClientCountComponent />
+          <MsspCountComponent userRole={userRole} msspId={selectedMssp} />
+          <MspCountComponent userRole={userRole} mspList={mspList}  />
+          <ClientCountComponent userRole={userRole} mspList={mspList}  />
         </Box>
+      {
+        userRole === 'admin' &&
 
-    <Box component="main" >
-      <Grid item spacing={6} my={4}>
+        <Box component="main" display="flex">
+          <Grid item spacing={6} my={4}>
+          {
+            showAllMssp &&
+            <MsspComponent onClickMssp={handleMsspClick} />
+          }
+          </Grid>
+          <Grid item spacing={6} my={4}>
+          {
+            selectedMssp &&
+            <MspComponent msspId={selectedMssp} queryMsp={mspList} />
+          }
+          </Grid>
+        </Box>
+        }
+
       {
-        !mssp &&
-        <MsspComponent />
-      }
-      {
-        mssp && mssp.mssp_id && !msp &&
-        <MspComponent msspId={mssp.mssp_id} onClickMsp={handleMspClick} />
-      }
-      {
-        mssp && mssp.mssp_id && msp && msp.msp_id &&
-        <div>
-        {JSON.stringify(msp)}
-        <LicensesTableComponent />
-        </div>
+        userRole === 'mssp' &&
+
+            <Box component="main" display="flex">
+              <Grid item spacing={6} my={4}>
+            {
+                selectedMssp &&
+                <PaginatedMspTable msspId={selectedMssp} mspRows={mspList} />
+            }
+              </Grid>
+            </Box>
       }
       </Grid>
 
-        </Box>
-      </Grid>
       </Grid>
 
       {/* Footer */}
@@ -112,6 +192,9 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+//                <MspComponent msspId={selectedMssp} queryMsp={mspList} />
+
 
 /*
 
@@ -140,4 +223,5 @@ export default HomePage;
         }
       </Breadcrumbs>
       </Grid>
+
 */

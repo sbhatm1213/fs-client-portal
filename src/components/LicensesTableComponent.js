@@ -2,7 +2,8 @@
 import React, {useEffect, useState} from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { supabase } from '../services/supabaseClient';
+//import { supabase } from '../services/supabaseClient';
+import { databases } from '../services/appwriteClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import theme from '../theme.js';
@@ -27,15 +28,20 @@ const LicensesTableComponent = ({mspId, onClickMsp}) => {
                   `)
                 .eq('msp.msp_id', mspId);
 */
+
+                const { response, error } = await databases.listDocuments(
+                        '670c21eb00243be197b4', // DB-ID
+                        'license')
+
             console.log(mspId);
-            const { data, error } = await supabase
-              .rpc('fetch_licenses_for_msp', { p_msp_id: mspId }); // Pass msp_id here
+//            const { data, error } = await supabase
+//              .rpc('fetch_licenses_for_msp', { p_msp_id: mspId }); // Pass msp_id here
 
 
             if (error) throw error;
-            console.log(data);
+            console.log(response);
 //            return data;
-            setLicenses(data);
+            setLicenses(response);
         } catch (error) {
             console.error('Error fetching Licenses:', error.message);
         }

@@ -4,6 +4,25 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
+// Suppress specific warning messages
+const suppressWarnings = () => {
+  const originalConsoleError = console.error;
+
+  console.error = (...args) => {
+    if (/Warning: Encountered two children with the same key/.test(args[0])) {
+      return; // Ignore this specific warning
+    }
+    else if(/Warning: Each child in a list should have a unique "key" prop/.test(args[0])){
+      return;
+    }
+    originalConsoleError.apply(console, args); // Call the original console.error
+  };
+};
+
+// Call suppressWarnings before rendering
+suppressWarnings();
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

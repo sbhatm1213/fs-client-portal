@@ -2,32 +2,38 @@
 import React, {useEffect, useState} from 'react';
 import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent, Box, TableBody, TableRow, TableCell, Table } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { supabase } from '../services/supabaseClient';
+//import { supabase } from '../services/supabaseClient';
+import { databases } from '../services/appwriteClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import theme from '../theme.js';
 
 
-const MsspCountComponent = () => {
+const MsspCountComponent = ({ userRole }) => {
 
     const [msspCount, setMsspCount] = useState(null);
     const [selectedMsspId, setSelectedMsspId] = useState(null);
     const [msps, setMsps] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const databaseID = process.env.REACT_APP_APPWRITE_DATABASE_ID;
+    const msspCollectionID = process.env.REACT_APP_APPWRITE_MSSP_COLLECTION_ID;
 
     const getCountMssps = async () => {
            try {
-                const { data, error } = await supabase
-                    .from('mssp')
-                    .select('count', { count: 'exact' });
 
-                if (error) {
-                    console.log(error);
-//                    throw error;
-                }
+                  databases.listDocuments(
+                        databaseID,
+                        msspCollectionID,
+                        [],
+                        0   // Limit 0, bcoz you need only count
+                        ).then(response => {
+                    setMsspCount(response.total);
+                  })
+                  .catch(error => {
+                    console.error(error);
+                  });
 
-                setMsspCount(data[0].count);
           } catch (error) {
                 console.log(error);
                 setError(error.message);
@@ -38,81 +44,41 @@ const MsspCountComponent = () => {
     }
 
     useEffect(() => {
-        getCountMssps();
+        if (userRole === 'admin'){
+            getCountMssps();
+        }
     }, []);
 
 
-/*
-    const fetchMspForMssp = async (msspId) => {
-        setSelectedMsspId(msspId); // Set the selected MSSP ID
-        try {
-            const { data, error } = await supabase
-                .from('msp_mssp')
-                .select(
-                    `
-                    msp!inner(msp_name),
-                    mssp!inner(mssp_name)
-                    `,
-                )
-                .eq('mssp.mssp_id', msspId);
+    if (userRole === 'admin') {
 
-            if (error) throw error;
-            console.log(data);
-                setMsps(data);
+        return (
 
-//            return data;
-        } catch (error) {
-            console.error('Error fetching MSPs:', error.message);
-        }
-    };*/
+            <Box mt={1} sx={{flex: 1}}>
 
-//    const fetchMspForMssp = (mssp) => {
-//                setSelectedMsspId(mssp.mssp_id); // Set the selected MSSP ID
-//                onClickMssp(mssp);
-//                getCountMssps();
-//
-//    }
+            <Card sx={{ backgroundColor: theme.palette.card.main,
+                        color: theme.palette.card.contrastText,
+                        maxWidth: theme.palette.card.maxWidth }} >
+                <CardContent>
+                  <Typography variant="h4">
+                      {msspCount}
+                    </Typography>
+                    <Typography variant="h6">
+                      Total MSSP(s)
+                  </Typography>
+                  <Typography variant="body2"></Typography>
 
+                </CardContent>
+            </Card>
+            </Box>
+        )
 
-    return (
-        <Box mt={4} sx={{flex: 1}}>
-
-        <Card sx={{ backgroundColor: theme.palette.card.main,
-                    color: theme.palette.card.contrastText,
-                    maxWidth: theme.palette.card.maxWidth }} >
-            <CardContent>
-              <Typography variant="h4">
-                  {msspCount}
-                </Typography>
-                <Typography variant="h6">
-                  Total MSSP(s)
-              </Typography>
-              <Typography variant="body2"></Typography>
-
-            </CardContent>
-        </Card>
-        </Box>
-    )
+    } else {
+        return         <Box mt={1} sx={{flex: 1}}></Box>
+    }
 }
 
 
 export default MsspCountComponent;
 
 //        {selectedMsspId && <MspComponent msspId={selectedMsspId} />}
-
-/*
-
-{selectedMsspId &&
-            (
-
-                <Table>
-                  <TableBody>
-                    {msps.map((msp, idx) => (
-                      <TableRow key={idx}>
-                        <TableCell>{msp.msp.msp_name}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-            )
-            }*/
