@@ -37,7 +37,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signInWithAzure = async () => {
-          await account.createOAuth2Session('microsoft', redirectUrl, redirectUrl);
+          await account.createOAuth2Session('microsoft',
+                        'https://main.d3n19dnhhpdakz.amplifyapp.com/v1/account/sessions/oauth2/callback/azure',
+                        'https://main.d3n19dnhhpdakz.amplifyapp.com/v1/account/sessions/oauth2/callback/azure');
   };
 
   const signOut = async () => {
