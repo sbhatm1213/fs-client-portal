@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize navigate object
 
 //  const { signInWithGoogle } = useAuth();
-  const { user, signInWithGoogle, signInWithAzure, signOut } = useAuth();
+  const { user, signInWithGoogle, signInWithAzureAws, signInWithAzureVercel, signOut } = useAuth();
 
   const handleGoogleLogin = async () => {
     await signInWithGoogle();
