@@ -39,7 +39,7 @@ const Login = () => {
               variant="contained"
               color="primary"
               fullWidth
-              onClick={() => handleGoogleLogin('google')}
+              onClick={() => handleGoogleLogin()}
               sx={{
                 borderRadius: '8px',
                 textTransform: 'none',
@@ -59,7 +59,7 @@ const Login = () => {
               variant="contained"
               color="primary" // Use a suitable color
               fullWidth
-              onClick={() => handleAzureLogin('azure')} // Adjust according to your Azure setup
+              onClick={() => handleAzureLogin()} // Adjust according to your Azure setup
               sx={{
                 borderRadius: '8px',
                 textTransform: 'none',

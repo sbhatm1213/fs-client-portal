@@ -87,7 +87,7 @@ const PaginatedClientTable = ({ mspId, clientRows }) => {
                   direction={orderBy === 'name' ? order : 'asc'}
                   onClick={() => handleRequestSort('name')}
                 >
-                  MSP Name
+                  Client Name
                 </TableSortLabel>
               </TableCell>
               <TableCell>

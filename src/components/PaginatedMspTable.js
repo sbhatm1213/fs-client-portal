@@ -87,15 +87,6 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
             <TableRow>
               <TableCell>
                 <TableSortLabel
-                  active={orderBy === '$id'}
-                  direction={orderBy === '$id' ? order : 'asc'}
-                  onClick={() => handleRequestSort('$id')}
-                >
-                  ID
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
                   active={orderBy === 'name'}
                   direction={orderBy === 'name' ? order : 'asc'}
                   onClick={() => handleRequestSort('name')}
@@ -146,7 +137,6 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (<>
                 <TableRow key={row.$id} selected={row.$id === selectedMsp} >
-                  <TableCell>{row.$id}</TableCell>
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.license_type}</TableCell>
                   <TableCell>{row.devices}</TableCell>

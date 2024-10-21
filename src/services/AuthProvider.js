@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signInWithAzure = async () => {
-          await account.createOAuth2Session('azure', 'http://localhost:3000', 'http://localhost:3000');
+          await account.createOAuth2Session('microsoft', 'http://localhost:3000', 'http://localhost:3000');
   };
 
   const signOut = async () => {
