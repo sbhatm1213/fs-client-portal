@@ -78,7 +78,6 @@ const Login = () => {
               Login with Azure AWS
             </Button>
           </Grid>
-        </Grid>
           <Grid item xs={12}>
             <Button
               variant="contained"
