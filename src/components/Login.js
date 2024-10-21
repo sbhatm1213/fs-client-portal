@@ -14,10 +14,14 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize navigate object
 
 //  const { signInWithGoogle } = useAuth();
-  const { user, signInWithGoogle, signInWithAzureAws, signInWithAzureVercel, signOut } = useAuth();
+  const { user, signInWithGoogleAws, signInWithGoogleVercel, signInWithAzureAws, signInWithAzureVercel, signOut } = useAuth();
 
-  const handleGoogleLogin = async () => {
-    await signInWithGoogle();
+  const handleGoogleLoginAws = async () => {
+    await signInWithGoogleAws();
+  };
+
+  const handleGoogleLoginVercel = async () => {
+    await signInWithGoogleVercel();
   };
 
   const handleAzureLoginAws = async () => {
@@ -43,7 +47,7 @@ const Login = () => {
               variant="contained"
               color="primary"
               fullWidth
-              onClick={() => handleGoogleLogin()}
+              onClick={() => handleGoogleLoginAws()}
               sx={{
                 borderRadius: '8px',
                 textTransform: 'none',
@@ -55,7 +59,27 @@ const Login = () => {
               }}
               startIcon={<GoogleIcon />} // Add Google icon
             >
-              Login with Google
+              Login with Google AWS
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={() => handleGoogleLoginVercel()}
+              sx={{
+                borderRadius: '8px',
+                textTransform: 'none',
+                padding: '10px',
+                boxShadow: 'none',
+                '&:hover': {
+                  boxShadow: '0px 4px 15px rgba(0,0,0,0.2)',
+                },
+              }}
+              startIcon={<GoogleIcon />} // Add Google icon
+            >
+              Login with Google Vercel
             </Button>
           </Grid>
           <Grid item xs={12}>
