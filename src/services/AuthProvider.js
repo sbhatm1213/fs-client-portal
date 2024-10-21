@@ -36,10 +36,16 @@ export const AuthProvider = ({ children }) => {
           await account.createOAuth2Session('google', redirectUrl, redirectUrl);
   };
 
-  const signInWithAzure = async () => {
+  const signInWithAzureAws = async () => {
           await account.createOAuth2Session('microsoft',
                         'https://main.d3n19dnhhpdakz.amplifyapp.com/v1/account/sessions/oauth2/callback/microsoft',
                         'https://main.d3n19dnhhpdakz.amplifyapp.com/v1/account/sessions/oauth2/callback/microsoft');
+  };
+
+  const signInWithAzureVercel = async () => {
+          await account.createOAuth2Session('microsoft',
+                        'https://fs-client-portal.vercel.app/v1/account/sessions/oauth2/callback/microsoft',
+                        'https://fs-client-portal.vercel.app/v1/account/sessions/oauth2/callback/microsoft');
   };
 
   const signOut = async () => {
@@ -48,7 +54,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signInWithAzure, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signInWithAzureAws, signInWithAzureVercel, signOut }}>
       {children}
     </AuthContext.Provider>
   );

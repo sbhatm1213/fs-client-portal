@@ -20,8 +20,12 @@ const Login = () => {
     await signInWithGoogle();
   };
 
-  const handleAzureLogin = async () => {
-    await signInWithAzure();
+  const handleAzureLoginAws = async () => {
+    await signInWithAzureAws();
+  };
+
+  const handleAzureLoginVercel = async () => {
+    await signInWithAzureVercel();
   };
 
   return (
@@ -59,7 +63,7 @@ const Login = () => {
               variant="contained"
               color="primary" // Use a suitable color
               fullWidth
-              onClick={() => handleAzureLogin()} // Adjust according to your Azure setup
+              onClick={() => handleAzureLoginAws()} // Adjust according to your Azure setup
               sx={{
                 borderRadius: '8px',
                 textTransform: 'none',
@@ -71,7 +75,28 @@ const Login = () => {
               }}
               startIcon={<SiMicrosoftazure />} // Add Azure icon
             >
-              Login with Azure
+              Login with Azure AWS
+            </Button>
+          </Grid>
+        </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary" // Use a suitable color
+              fullWidth
+              onClick={() => handleAzureLoginVercel()} // Adjust according to your Azure setup
+              sx={{
+                borderRadius: '8px',
+                textTransform: 'none',
+                padding: '10px',
+                boxShadow: 'none',
+                '&:hover': {
+                  boxShadow: '0px 4px 15px rgba(0,0,0,0.2)',
+                },
+              }}
+              startIcon={<SiMicrosoftazure />} // Add Azure icon
+            >
+              Login with Azure Vercel
             </Button>
           </Grid>
         </Grid>
