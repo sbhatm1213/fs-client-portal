@@ -13,7 +13,8 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const redirectUrl = window.location.origin;
+//  const redirectUrl = window.location.origin;
+  const redirectUrl = process.env.REACT_APP_REDIRECT_URI_AZURE;
 
   useEffect(() => {
     const checkUser = async () => {
