@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-//  const redirectUrl = window.location.origin;
+  const redirectUrl = window.location.origin + '/dashboard';
 //  const redirectUrl = process.env.REACT_APP_REDIRECT_URI_AZURE;
 
   useEffect(() => {
@@ -32,28 +32,12 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
 
-  const signInWithGoogleAws = async () => {
-          await account.createOAuth2Session('google',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com');
+  const signInWithGoogle = async () => {
+          await account.createOAuth2Session('google', redirectUrl, redirectUrl);
   };
 
-  const signInWithGoogleVercel = async () => {
-          await account.createOAuth2Session('google',
-                        'https://fs-client-portal.vercel.app',
-                        'https://fs-client-portal.vercel.app');
-  };
-
-  const signInWithAzureAws = async () => {
-          await account.createOAuth2Session('microsoft',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com');
-  };
-
-  const signInWithAzureVercel = async () => {
-          await account.createOAuth2Session('microsoft',
-                        'https://fs-client-portal.vercel.app',
-                        'https://fs-client-portal.vercel.app');
+  const signInWithAzure = async () => {
+          await account.createOAuth2Session('microsoft', redirectUrl, redirectUrl);
   };
 
   const signOut = async () => {
@@ -62,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogleAws, signInWithGoogleVercel, signInWithAzureAws, signInWithAzureVercel, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signInWithAzure, signOut }}>
       {children}
     </AuthContext.Provider>
   );

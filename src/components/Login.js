@@ -14,22 +14,14 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize navigate object
 
 //  const { signInWithGoogle } = useAuth();
-  const { user, signInWithGoogleAws, signInWithGoogleVercel, signInWithAzureAws, signInWithAzureVercel, signOut } = useAuth();
+  const { user, signInWithGoogle, signInWithAzure, signOut } = useAuth();
 
-  const handleGoogleLoginAws = async () => {
-    await signInWithGoogleAws();
+  const handleGoogleLogin = async () => {
+    await signInWithGoogle();
   };
 
-  const handleGoogleLoginVercel = async () => {
-    await signInWithGoogleVercel();
-  };
-
-  const handleAzureLoginAws = async () => {
-    await signInWithAzureAws();
-  };
-
-  const handleAzureLoginVercel = async () => {
-    await signInWithAzureVercel();
+  const handleAzureLogin = async () => {
+    await signInWithAzure();
   };
 
   return (
@@ -47,7 +39,7 @@ const Login = () => {
               variant="contained"
               color="primary"
               fullWidth
-              onClick={() => handleGoogleLoginAws()}
+              onClick={() => handleGoogleLogin()}
               sx={{
                 borderRadius: '8px',
                 textTransform: 'none',
@@ -59,35 +51,16 @@ const Login = () => {
               }}
               startIcon={<GoogleIcon />} // Add Google icon
             >
-              Login with Google AWS
+              Login with Google
             </Button>
           </Grid>
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={() => handleGoogleLoginVercel()}
-              sx={{
-                borderRadius: '8px',
-                textTransform: 'none',
-                padding: '10px',
-                boxShadow: 'none',
-                '&:hover': {
-                  boxShadow: '0px 4px 15px rgba(0,0,0,0.2)',
-                },
-              }}
-              startIcon={<GoogleIcon />} // Add Google icon
-            >
-              Login with Google Vercel
-            </Button>
-          </Grid>
+
           <Grid item xs={12}>
             <Button
               variant="contained"
               color="primary" // Use a suitable color
               fullWidth
-              onClick={() => handleAzureLoginAws()} // Adjust according to your Azure setup
+              onClick={() => handleAzureLogin()} // Adjust according to your Azure setup
               sx={{
                 borderRadius: '8px',
                 textTransform: 'none',
@@ -99,29 +72,10 @@ const Login = () => {
               }}
               startIcon={<SiMicrosoftazure />} // Add Azure icon
             >
-              Login with Azure AWS
+              Login with Azure
             </Button>
           </Grid>
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary" // Use a suitable color
-              fullWidth
-              onClick={() => handleAzureLoginVercel()} // Adjust according to your Azure setup
-              sx={{
-                borderRadius: '8px',
-                textTransform: 'none',
-                padding: '10px',
-                boxShadow: 'none',
-                '&:hover': {
-                  boxShadow: '0px 4px 15px rgba(0,0,0,0.2)',
-                },
-              }}
-              startIcon={<SiMicrosoftazure />} // Add Azure icon
-            >
-              Login with Azure Vercel
-            </Button>
-          </Grid>
+
         </Grid>
       </Box>
     </Container>
