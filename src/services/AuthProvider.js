@@ -38,8 +38,8 @@ export const AuthProvider = ({ children }) => {
 
   const signInWithAzureAws = async () => {
           await account.createOAuth2Session('microsoft',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com/v1/account/sessions/oauth2/callback/microsoft',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com/v1/account/sessions/oauth2/callback/microsoft');
+                        'https://main.d3n19dnhhpdakz.amplifyapp.com/oauth2/idpresponse',
+                        'https://main.d3n19dnhhpdakz.amplifyapp.com/oauth2/idpresponse');
   };
 
   const signInWithAzureVercel = async () => {
