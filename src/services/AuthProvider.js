@@ -34,26 +34,26 @@ export const AuthProvider = ({ children }) => {
 
   const signInWithGoogleAws = async () => {
           await account.createOAuth2Session('google',
-                        success='https://main.d3n19dnhhpdakz.amplifyapp.com',
-                        failure='https://main.d3n19dnhhpdakz.amplifyapp.com');
+                        'https://main.d3n19dnhhpdakz.amplifyapp.com',
+                        'https://main.d3n19dnhhpdakz.amplifyapp.com');
   };
 
   const signInWithGoogleVercel = async () => {
           await account.createOAuth2Session('google',
-                        success='https://fs-client-portal.vercel.app',
-                        failure='https://fs-client-portal.vercel.app');
+                        'https://fs-client-portal.vercel.app',
+                        'https://fs-client-portal.vercel.app');
   };
 
   const signInWithAzureAws = async () => {
           await account.createOAuth2Session('microsoft',
-                        success='https://main.d3n19dnhhpdakz.amplifyapp.com',
-                        failure='https://main.d3n19dnhhpdakz.amplifyapp.com');
+                        'https://main.d3n19dnhhpdakz.amplifyapp.com',
+                        'https://main.d3n19dnhhpdakz.amplifyapp.com');
   };
 
   const signInWithAzureVercel = async () => {
           await account.createOAuth2Session('microsoft',
-                        success='https://fs-client-portal.vercel.app',
-                        failure='https://fs-client-portal.vercel.app');
+                        'https://fs-client-portal.vercel.app',
+                        'https://fs-client-portal.vercel.app');
   };
 
   const signOut = async () => {
