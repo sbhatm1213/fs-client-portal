@@ -34,26 +34,26 @@ export const AuthProvider = ({ children }) => {
 
   const signInWithGoogleAws = async () => {
           await account.createOAuth2Session('google',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com');
+                        success='https://main.d3n19dnhhpdakz.amplifyapp.com',
+                        failure='https://main.d3n19dnhhpdakz.amplifyapp.com');
   };
 
   const signInWithGoogleVercel = async () => {
           await account.createOAuth2Session('google',
-                        'https://fs-client-portal.vercel.app',
-                        'https://fs-client-portal.vercel.app');
+                        success='https://fs-client-portal.vercel.app',
+                        failure='https://fs-client-portal.vercel.app');
   };
 
   const signInWithAzureAws = async () => {
           await account.createOAuth2Session('microsoft',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com/v1/account/sessions/oauth2/callback/microsoft',
-                        'https://main.d3n19dnhhpdakz.amplifyapp.com/v1/account/sessions/oauth2/callback/microsoft');
+                        success='https://main.d3n19dnhhpdakz.amplifyapp.com',
+                        failure='https://main.d3n19dnhhpdakz.amplifyapp.com');
   };
 
   const signInWithAzureVercel = async () => {
           await account.createOAuth2Session('microsoft',
-                        'https://fs-client-portal.vercel.app/v1/account/sessions/oauth2/callback/microsoft',
-                        'https://fs-client-portal.vercel.app/v1/account/sessions/oauth2/callback/microsoft');
+                        success='https://fs-client-portal.vercel.app',
+                        failure='https://fs-client-portal.vercel.app');
   };
 
   const signOut = async () => {
