@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const redirectUrl = window.location.origin;
 
   useEffect(() => {
     const checkUser = async () => {
@@ -32,11 +32,11 @@ export const AuthProvider = ({ children }) => {
 
 
   const signInWithGoogle = async () => {
-          await account.createOAuth2Session('google', 'http://localhost:3000', 'http://localhost:3000');
+          await account.createOAuth2Session('google', redirectUrl, redirectUrl);
   };
 
   const signInWithAzure = async () => {
-          await account.createOAuth2Session('microsoft', 'http://localhost:3000', 'http://localhost:3000');
+          await account.createOAuth2Session('microsoft', redirectUrl, redirectUrl);
   };
 
   const signOut = async () => {
