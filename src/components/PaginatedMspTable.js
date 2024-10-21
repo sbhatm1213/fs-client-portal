@@ -62,7 +62,8 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
     return 0;
   });
 
-  const handleMspSelection = (clickedMsp) => {
+  const handleMspSelection = (event, clickedMsp) => {
+    event.preventDefault();
 //        console.log(clickedMssp);
     setSelectedMsp(clickedMsp.$id);
 //    onClickMsp(clickedMsp, clientList);
@@ -79,7 +80,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
         size="small"
         value={filterText}
         onChange={handleFilterChange}
-        style={{ margin: '16px' }}
+        style={{ margin: '16px', width: '300px' }}
       />
       <TableContainer>
         <Table>
@@ -147,17 +148,18 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                             sx={{
                               backgroundColor: theme.palette.card.main,
                               color: theme.palette.card.contrastText,
+                              width: '100px',
+                              textAlign: 'center'
                             }}
                         variant="outlined"
-                        onClick={() => handleMspSelection(row)}
+                        onClick={(event) => handleMspSelection(event, row)}
                       />
                   </TableCell>
                 </TableRow>
                 {
                             selectedMsp && selectedMsp == row.$id ? (
                           <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell colSpan={5}>
+                            <TableCell colSpan={6}>
                                 <PaginatedClientTable mspId={selectedMsp} clientRows={clientList} />
                             </TableCell>
                           </TableRow>

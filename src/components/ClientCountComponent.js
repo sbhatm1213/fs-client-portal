@@ -57,19 +57,14 @@ const ClientCountComponent = ({ userRole, mspList }) => {
 
     return (
         <Box mt={1}  sx={{flex: 1}}>
-
         <Card sx={{ backgroundColor: theme.palette.card.main,
                     color: theme.palette.card.contrastText,
                     maxWidth: theme.palette.card.maxWidth }} >
             <CardContent>
-              <Typography variant="h4">
+              <Typography variant="h5">
                   {clientCount}
                 </Typography>
-                <Typography variant="h6">
-                  Total Client(s)
-              </Typography>
-              <Typography variant="body2"></Typography>
-
+              <Typography variant="body1">Total Client(s)</Typography>
             </CardContent>
         </Card>
         </Box>

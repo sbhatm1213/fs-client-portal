@@ -132,8 +132,19 @@ const HomePage = () => {
                   </ListItemIcon>
                   <ListItemText primary='Heimdal' />
                 </ListItemButton>
+                <ListItemButton disabled >
+                  <ListItemIcon>
+                    <Security />
+                  </ListItemIcon>
+                  <ListItemText primary='SentinelOne' />
+                </ListItemButton>
+                <ListItemButton disabled >
+                  <ListItemIcon>
+                    <Security />
+                  </ListItemIcon>
+                  <ListItemText primary='BlackPoint' />
+                </ListItemButton>
               </List>
-              <Divider />
           </Box>
         </Grid>
 
@@ -141,7 +152,6 @@ const HomePage = () => {
 
       <Grid item xs={10} sx={{ flexGrow: 1, p: 2 }}>
         <Box component="main" display="flex">
-          <MsspCountComponent userRole={userRole} msspId={selectedMssp} />
           <MspCountComponent userRole={userRole} mspList={mspList}  />
           <ClientCountComponent userRole={userRole} mspList={mspList}  />
         </Box>
@@ -192,6 +202,8 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+//           <MsspCountComponent userRole={userRole} msspId={selectedMssp} />
 
 //                <MspComponent msspId={selectedMssp} queryMsp={mspList} />
 

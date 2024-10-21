@@ -7,7 +7,7 @@ const theme = createTheme({
         card: {
             main: '#11609f',
             contrastText: '#eff8f9',
-            maxWidth: 260
+            maxWidth: 220
         },
     },
 });

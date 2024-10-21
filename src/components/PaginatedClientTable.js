@@ -66,21 +66,12 @@ const PaginatedClientTable = ({ mspId, clientRows }) => {
         size="small"
         value={filterText}
         onChange={handleFilterChange}
-        style={{ margin: '16px' }}
+        style={{ margin: '16px', width: '300px' }}
       />
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === '$id'}
-                  direction={orderBy === '$id' ? order : 'asc'}
-                  onClick={() => handleRequestSort('$id')}
-                >
-                  ID
-                </TableSortLabel>
-              </TableCell>
               <TableCell>
                 <TableSortLabel
                   active={orderBy === 'name'}
@@ -125,12 +116,10 @@ const PaginatedClientTable = ({ mspId, clientRows }) => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow key={row.$id}>
-                  <TableCell>{row.$id}</TableCell>
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.license_type}</TableCell>
                   <TableCell>{row.active_licenses}</TableCell>
                   <TableCell>{row.total_licenses}</TableCell>
-
                 </TableRow>
               ))}
           </TableBody>
