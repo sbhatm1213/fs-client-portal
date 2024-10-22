@@ -91,7 +91,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
         <Table>
           <TableHead sx={{ fontWeight: 'bold' }}>
             <TableRow>
-              <TableCell  sx={{ fontWeight: 'bold' }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
                 <TableSortLabel
                   active={orderBy === 'name'}
                   direction={orderBy === 'name' ? order : 'asc'}
@@ -100,7 +100,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   MSP Name
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold' }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
                 <TableSortLabel
                   active={orderBy === 'license_type'}
                   direction={orderBy === 'license_type' ? order : 'asc'}
@@ -109,7 +109,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   Licence Type
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold' }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
                 <TableSortLabel
                   active={orderBy === 'purchased_licenses'}
                   direction={orderBy === 'purchased_licenses' ? order : 'asc'}
@@ -118,7 +118,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   Purchased Licences
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold' }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
                 <TableSortLabel
                   active={orderBy === 'devices'}
                   direction={orderBy === 'devices' ? order : 'asc'}
@@ -127,7 +127,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   Devices
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold' }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
                 <TableSortLabel
                   active={orderBy === 'client'}
                   direction={orderBy === 'client' ? order : 'asc'}

@@ -86,7 +86,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell  sx={{ fontWeight: 'bold' }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
                 <TableSortLabel
                   active={orderBy === 'name'}
                   direction={orderBy === 'name' ? order : 'asc'}
@@ -95,7 +95,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
                   Client Name
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold' }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
                 <TableSortLabel
                   active={orderBy === 'license_type'}
                   direction={orderBy === 'license_type' ? order : 'asc'}
@@ -104,7 +104,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
                   Licence Type
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold' }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
                 <TableSortLabel
                   active={orderBy === 'total_licenses'}
                   direction={orderBy === 'total_licenses' ? order : 'asc'}
@@ -113,7 +113,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
                   Total Licences
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold' }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
                 <TableSortLabel
                   active={orderBy === 'active_licenses'}
                   direction={orderBy === 'active_licenses' ? order : 'asc'}
