@@ -36,11 +36,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signInWithAzure = async () => {
-          await account.createOAuth2Session('microsoft', {
-                success: redirectUrl,
-                failure: redirectUrl,
-                scopes: ['openid', 'profile', 'email']
-            });
+//          await account.createOAuth2Session('microsoft', redirectUrl, redirectUrl);
+          try {
+               await account.createOAuth2Session('microsoft',
+               'https://localhost:3000/',
+               'https://localhost:3000/',
+               ['openid', 'profile', 'email']);
+            } catch (error) {
+                console.error('OAuth Session Error:', error);
+            }
   };
 
   const signOut = async () => {
