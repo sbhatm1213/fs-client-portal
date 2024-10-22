@@ -36,7 +36,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signInWithAzure = async () => {
-          await account.createOAuth2Session('microsoft', redirectUrl, redirectUrl);
+          await account.createOAuth2Session('microsoft', {
+                success: redirectUrl,
+                failure: redirectUrl,
+                scopes: ['openid', 'profile', 'email']
+            });
   };
 
   const signOut = async () => {
