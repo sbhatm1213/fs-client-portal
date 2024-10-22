@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { SiMicrosoftazure } from 'react-icons/si';
+import theme from '../theme.js';
+
 
 const Login = () => {
 //  const history = useHistory(); // Initialize history object
@@ -46,7 +48,7 @@ const Login = () => {
                 padding: '10px',
                 boxShadow: 'none',
                 '&:hover': {
-                  boxShadow: '0px 4px 15px rgba(0,0,0,0.2)',
+                  boxShadow: `0px 4px 15px ${theme.palette.card.main}`,
                 },
               }}
               startIcon={<GoogleIcon />} // Add Google icon
@@ -58,16 +60,16 @@ const Login = () => {
           <Grid item xs={12}>
             <Button
               variant="contained"
-              color="primary" // Use a suitable color
+              color="primary"
               fullWidth
-              onClick={() => handleAzureLogin()} // Adjust according to your Azure setup
+              onClick={() => handleAzureLogin()}
               sx={{
                 borderRadius: '8px',
                 textTransform: 'none',
                 padding: '10px',
                 boxShadow: 'none',
                 '&:hover': {
-                  boxShadow: '0px 4px 15px rgba(0,0,0,0.2)',
+                  boxShadow: `0px 4px 15px ${theme.palette.card.main}`,
                 },
               }}
               startIcon={<SiMicrosoftazure />} // Add Azure icon

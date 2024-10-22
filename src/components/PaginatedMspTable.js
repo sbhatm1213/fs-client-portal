@@ -67,8 +67,13 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
 //        console.log(clickedMssp);
     setSelectedMsp(clickedMsp.$id);
 //    onClickMsp(clickedMsp, clientList);
-
     setClientList(clickedMsp.client);
+  };
+
+  const closeClientTable = (event) => {
+    event.preventDefault();
+    setSelectedMsp(null);
+    setClientList([]);
   };
 
 
@@ -84,9 +89,9 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
       />
       <TableContainer>
         <Table>
-          <TableHead>
+          <TableHead sx={{ fontWeight: 'bold' }}>
             <TableRow>
-              <TableCell>
+              <TableCell  sx={{ fontWeight: 'bold' }}>
                 <TableSortLabel
                   active={orderBy === 'name'}
                   direction={orderBy === 'name' ? order : 'asc'}
@@ -95,7 +100,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   MSP Name
                 </TableSortLabel>
               </TableCell>
-              <TableCell>
+              <TableCell  sx={{ fontWeight: 'bold' }}>
                 <TableSortLabel
                   active={orderBy === 'license_type'}
                   direction={orderBy === 'license_type' ? order : 'asc'}
@@ -104,16 +109,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   Licence Type
                 </TableSortLabel>
               </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'devices'}
-                  direction={orderBy === 'devices' ? order : 'asc'}
-                  onClick={() => handleRequestSort('devices')}
-                >
-                  Devices
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
+              <TableCell  sx={{ fontWeight: 'bold' }}>
                 <TableSortLabel
                   active={orderBy === 'purchased_licenses'}
                   direction={orderBy === 'purchased_licenses' ? order : 'asc'}
@@ -122,7 +118,16 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   Purchased Licences
                 </TableSortLabel>
               </TableCell>
-              <TableCell>
+              <TableCell  sx={{ fontWeight: 'bold' }}>
+                <TableSortLabel
+                  active={orderBy === 'devices'}
+                  direction={orderBy === 'devices' ? order : 'asc'}
+                  onClick={() => handleRequestSort('devices')}
+                >
+                  Devices
+                </TableSortLabel>
+              </TableCell>
+              <TableCell  sx={{ fontWeight: 'bold' }}>
                 <TableSortLabel
                   active={orderBy === 'client'}
                   direction={orderBy === 'client' ? order : 'asc'}
@@ -140,8 +145,8 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                 <TableRow key={row.$id} selected={row.$id === selectedMsp} >
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.license_type}</TableCell>
-                  <TableCell>{row.devices}</TableCell>
                   <TableCell>{row.purchased_licenses}</TableCell>
+                  <TableCell>{row.devices}</TableCell>
                   <TableCell>
                     <Chip
                         label={`${row.client.length} Client(s)`}
@@ -160,7 +165,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                             selectedMsp && selectedMsp == row.$id ? (
                           <TableRow>
                             <TableCell colSpan={6}>
-                                <PaginatedClientTable mspId={selectedMsp} clientRows={clientList} />
+                                <PaginatedClientTable mspId={selectedMsp} clientRows={clientList} closeTable={closeClientTable} />
                             </TableCell>
                           </TableRow>
                           ) : null

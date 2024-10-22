@@ -16,6 +16,7 @@ import ClientCountComponent from './ClientCountComponent.js'
 import MsspComponent  from './MsspComponent.js'
 import PaginatedMspTable  from './PaginatedMspTable.js'
 import MspComponent  from './MspComponent.js'
+import ProfileIconComponent  from './ProfileIconComponent.js'
 //import LicensesTableComponent  from './LicensesTableComponent.js'
 
 
@@ -33,6 +34,7 @@ const HomePage = () => {
     const [userRole, setUserRole] = useState('');
     const [showAllMssp, setShowAllMssp] = useState(true);
     const [selectedMssp, setSelectedMssp] = useState(null);
+    const [selectedMsspName, setSelectedMsspName] = useState(null);
     const [mspList, setMspList] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -77,6 +79,7 @@ const HomePage = () => {
                                         ).then(msspresponse => {
 //                                    console.log(msspresponse.documents); // Access documents here
                                     setSelectedMssp(msspQueryId);
+                                    setSelectedMsspName(msspresponse.documents[0].name);
                                     setMspList(msspresponse.documents[0].msp);
                                   })
                                   .catch(error => {
@@ -105,6 +108,7 @@ const HomePage = () => {
 
 
   return (
+        <ThemeProvider theme={theme}>
 
   <Grid container direction="column" sx={{ minHeight: '80vh' }}>
       {/* AppBar at the top */}
@@ -113,9 +117,8 @@ const HomePage = () => {
           <Toolbar>
             <Typography variant="h6"  style={{ flexGrow: 1 }} >FS Client Portal</Typography>
             <Tooltip title={user.name} arrow>
-            <IconButton color="inherit" onClick={() => console.log('Profile clicked')}>
-                <AccountCircle />
-          </IconButton>
+                      <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} signOut={signOut} />
+
           </Tooltip>
           </Toolbar>
         </AppBar>
@@ -128,21 +131,21 @@ const HomePage = () => {
               <List component="nav" key='heimdal_id'>
                 <ListItemButton selected={true} >
                   <ListItemIcon>
-                    <Security />
+                    <Security  fontSize="small" />
                   </ListItemIcon>
-                  <ListItemText primary='Heimdal' />
+                  <ListItemText secondary='Heimdal' secondaryTypographyProps={{ sx: { fontWeight: 'bold' } }} />
                 </ListItemButton>
                 <ListItemButton disabled >
                   <ListItemIcon>
-                    <Security />
+                    <Security  fontSize="small"  />
                   </ListItemIcon>
-                  <ListItemText primary='SentinelOne' />
+                  <ListItemText secondary='SentinelOne' secondaryTypographyProps={{ sx: { fontWeight: 'bold' } }} />
                 </ListItemButton>
                 <ListItemButton disabled >
                   <ListItemIcon>
-                    <Security />
+                    <Security  fontSize="small"  />
                   </ListItemIcon>
-                  <ListItemText primary='BlackPoint' />
+                  <ListItemText secondary='BlackPoint'  secondaryTypographyProps={{ sx: { fontWeight: 'bold' } }} />
                 </ListItemButton>
               </List>
           </Box>
@@ -198,10 +201,13 @@ const HomePage = () => {
       </Grid>
     </Grid>
 
+    </ThemeProvider>
   );
 };
 
 export default HomePage;
+
+
 
 //           <MsspCountComponent userRole={userRole} msspId={selectedMssp} />
 
@@ -235,5 +241,10 @@ export default HomePage;
         }
       </Breadcrumbs>
       </Grid>
+
+
+            <IconButton color="inherit" onClick={() => console.log('Profile clicked')}>
+                <AccountCircle />
+            </IconButton>
 
 */

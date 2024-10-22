@@ -10,17 +10,25 @@ import {
   TextField,
   Paper,
   TableSortLabel,
-  Chip
+  Chip,
+  IconButton,
+  Box
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import theme from '../theme.js';
 
 
-const PaginatedClientTable = ({ mspId, clientRows }) => {
+const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filterText, setFilterText] = useState('');
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
+
+
+    const handleTableClose = (event) => {
+        closeTable(event);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -60,6 +68,8 @@ const PaginatedClientTable = ({ mspId, clientRows }) => {
 
   return (
     <Paper>
+          <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+
       <TextField
         label="Filter by Name"
         variant="outlined"
@@ -68,11 +78,15 @@ const PaginatedClientTable = ({ mspId, clientRows }) => {
         onChange={handleFilterChange}
         style={{ margin: '16px', width: '300px' }}
       />
+      <IconButton onClick={(event) => handleTableClose(event)} >
+          <CloseIcon fontSize="small"  />
+        </IconButton>
+        </Box>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
+              <TableCell  sx={{ fontWeight: 'bold' }}>
                 <TableSortLabel
                   active={orderBy === 'name'}
                   direction={orderBy === 'name' ? order : 'asc'}
@@ -81,7 +95,7 @@ const PaginatedClientTable = ({ mspId, clientRows }) => {
                   Client Name
                 </TableSortLabel>
               </TableCell>
-              <TableCell>
+              <TableCell  sx={{ fontWeight: 'bold' }}>
                 <TableSortLabel
                   active={orderBy === 'license_type'}
                   direction={orderBy === 'license_type' ? order : 'asc'}
@@ -90,16 +104,7 @@ const PaginatedClientTable = ({ mspId, clientRows }) => {
                   Licence Type
                 </TableSortLabel>
               </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'active_licenses'}
-                  direction={orderBy === 'active_licenses' ? order : 'asc'}
-                  onClick={() => handleRequestSort('active_licenses')}
-                >
-                  Active Licenses
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
+              <TableCell  sx={{ fontWeight: 'bold' }}>
                 <TableSortLabel
                   active={orderBy === 'total_licenses'}
                   direction={orderBy === 'total_licenses' ? order : 'asc'}
@@ -108,7 +113,15 @@ const PaginatedClientTable = ({ mspId, clientRows }) => {
                   Total Licences
                 </TableSortLabel>
               </TableCell>
-
+              <TableCell  sx={{ fontWeight: 'bold' }}>
+                <TableSortLabel
+                  active={orderBy === 'active_licenses'}
+                  direction={orderBy === 'active_licenses' ? order : 'asc'}
+                  onClick={() => handleRequestSort('active_licenses')}
+                >
+                  Active Licenses
+                </TableSortLabel>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -118,8 +131,8 @@ const PaginatedClientTable = ({ mspId, clientRows }) => {
                 <TableRow key={row.$id}>
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.license_type}</TableCell>
-                  <TableCell>{row.active_licenses}</TableCell>
                   <TableCell>{row.total_licenses}</TableCell>
+                  <TableCell>{row.active_licenses}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
