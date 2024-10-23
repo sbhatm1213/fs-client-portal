@@ -21,7 +21,9 @@ const HeimdalProductCard = () => {
                   Heimdal
                 </Typography>
               <Typography variant="caption" mt={4} >
-                    Access comprehensive customer data from Heimdal Security's Customers API. Our platform delivers detailed information such as customer status, subscribed products, and license usage, helping you manage security services efficiently.
+                    Access comprehensive customer data from Heimdal Security's Customers API.
+                    Our platform delivers detailed information such as customer status, subscribed products and license usage,
+                    helping you manage security services efficiently.
               </Typography>
             </CardContent>
         </Card>

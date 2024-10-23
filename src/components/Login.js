@@ -6,7 +6,8 @@ import {
   Button,
   Container,
   Grid,
-  Divider
+  Divider,
+  Chip
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +39,6 @@ const Login = () => {
         display: 'flex',
         alignItems: 'center', // Center vertically
         justifyContent: 'center', // Center horizontally
-        backgroundColor: `${theme.palette.card.main}`, // Optional: background color for the page
         padding: 0 // Remove padding to prevent whitespace
       }}
     >
@@ -49,18 +49,18 @@ const Login = () => {
           maxWidth: 400, // Limit the width of the box
           textAlign: 'center', // Center text inside the box
           padding: 4,
-          backgroundColor: 'white', // White background for buttons area
+          backgroundColor: `${theme.palette.card.main}`, // Optional: background color for the page
           borderRadius: 2, // Rounded corners
           boxShadow: 1, // Add shadow for a subtle effect
         }}
       >
-        <Typography variant="h4" sx={{ marginBottom: 1, fontWeight: "500"  }}>
+        <Typography variant="h4" sx={{ marginBottom: 1, fontWeight: "bold", color: `${theme.palette.card.contrastText}` }}>
           FS Client Portal
         </Typography>
-        <Typography variant="body2" sx={{ marginBottom: 2 }}>
+        <Typography variant="body2" sx={{ marginBottom: 2, color: `${theme.palette.card.contrastText}` }}>
           Get started by signing in with your preferred method:
         </Typography>
-        <Divider sx={{ marginBottom: 2 }} />
+        <Divider sx={{ marginBottom: 2, backgroundColor: `${theme.palette.card.contrastText}` }} />
 
         <Button
           variant="contained"
@@ -69,13 +69,13 @@ const Login = () => {
           onClick={() => handleGoogleLogin()}
           sx={{
             textTransform: "none",
-            fontWeight: "bold",
-            backgroundColor: `${theme.palette.card.main}`,
-            color: `${theme.palette.card.contrastText}`,
-            '&:hover': {
-              backgroundColor: '#365E8D',
-            },
+            fontWeight: "medium",
+            backgroundColor: `${theme.palette.card.contrastText}`,
+            color: `${theme.palette.card.main}`,
             marginBottom: 2,
+            '&:hover': {
+                boxShadow: 14
+            }
           }}
         >
           Login with Google
@@ -88,12 +88,12 @@ const Login = () => {
           onClick={() => handleAzureLogin()}
           sx={{
             textTransform: "none",
-            fontWeight: "bold",
-            backgroundColor: `${theme.palette.card.main}`,
-            color: `${theme.palette.card.contrastText}`,
+            fontWeight: "medium",
+            backgroundColor: `${theme.palette.card.contrastText}`,
+            color: `${theme.palette.card.main}`,
             '&:hover': {
-              backgroundColor: '#365E8D',
-            },
+                boxShadow: 14
+            }
           }}
         >
           Login with Azure
