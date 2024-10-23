@@ -1,9 +1,11 @@
 // /src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
 import { AuthProvider, useAuth } from './services/AuthProvider'; // Adjust the path as necessary
 import Login from './components/Login';
 import HomePage from './components/HomePage';
+import theme from './theme.js';
 
 
 /*
@@ -48,9 +50,12 @@ const AppContent = () => {
 const App = () => {
   return (
     <AuthProvider>
+        <ThemeProvider theme={theme}>
+
       <Router>
         <AppContent />
       </Router>
+      </ThemeProvider>
     </AuthProvider>
   );
 };

@@ -73,7 +73,7 @@ const Login = () => {
             backgroundColor: `${theme.palette.card.main}`,
             color: `${theme.palette.card.contrastText}`,
             '&:hover': {
-              backgroundColor: '#C13527',
+              backgroundColor: '#365E8D',
             },
             marginBottom: 2,
           }}
