@@ -2,11 +2,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import { AuthProvider, useAuth } from './services/AuthProvider'; // Adjust the path as necessary
-import Login from './components/Login';
+//import { AuthProvider, useAuth } from './services/AuthProvider'; // Adjust the path as necessary
+import { TestAuthProvider, useAuth } from './services/TestAuthProvider'; // Adjust the path as necessary
+//import Login from './components/Login';
+import TestLogin from './components/TestLogin';
 import HomePage from './components/HomePage';
 import theme from './theme.js';
-
+import { getAccessToken } from './utils/auth';
 
 /*
 function App() {
@@ -32,11 +34,14 @@ function App() {
 
 const AppContent = () => {
   const { user } = useAuth(); // Get user from Auth context
+    const isLoggedIn = getAccessToken('access_token');
+  console.log(user);
+  console.log(isLoggedIn);
 
   return (
     <Routes>
       {/* Route for login */}
-      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <TestLogin />} />
 
       {/* Route for main app/dashboard */}
       <Route path="/dashboard" element={user ? <HomePage /> : <Navigate to="/login" />} />
@@ -49,14 +54,14 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <AuthProvider>
+    <TestAuthProvider>
         <ThemeProvider theme={theme}>
 
       <Router>
         <AppContent />
       </Router>
       </ThemeProvider>
-    </AuthProvider>
+    </TestAuthProvider>
   );
 };
 

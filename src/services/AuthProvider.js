@@ -32,7 +32,15 @@ export const AuthProvider = ({ children }) => {
 
 
   const signInWithGoogle = async () => {
-          await account.createOAuth2Session('google', redirectUrl, redirectUrl);
+//        console.log(redirectUrl);
+//          await account.createOAuth2Session('google', redirectUrl, redirectUrl);
+           try {
+               await account.createOAuth2Session('google',
+               'https://localhost:3000/',
+               'https://localhost:3000/');
+            } catch (error) {
+                console.error('OAuth Session Error:', error);
+            }
   };
 
   const signInWithAzure = async () => {
