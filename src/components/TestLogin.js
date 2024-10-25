@@ -1,6 +1,6 @@
 // login.js
 import React, { useEffect } from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from 'react-google-login';
 import { setAccessToken, getAccessToken } from '../utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { Client, Account, Functions } from 'appwrite';
@@ -12,21 +12,15 @@ const functions = new Functions(client);
 const TestLogin = () => {
   const navigate = useNavigate();
 
+    const login_uri = window.location.origin;
   // Initialize the Appwrite client
 //    const account = new Account(client);
 //    const access_token = getAccessToken('access_token');
 
 
-//  useEffect(() => {
-//    const checkSession = async (access_token) => {
-////        console.log(access_token);
-//        if (access_token){
-//            navigate('/dashboard');
-//        }
-//    };
-//
-//    checkSession(access_token);
-//  }, [access_token]);
+  useEffect(() => {
+        console.log(login_uri);
+  }, []);
 
 
 //    const createSession = async (accessToken) => {
@@ -42,6 +36,7 @@ const TestLogin = () => {
 
 
   const handleSuccess = async (credentialResponse) => {
+        console.log(credentialResponse);
         const googleToken = credentialResponse.credential;
 
         try {
@@ -65,6 +60,7 @@ const TestLogin = () => {
   const handleError = () => {
     console.log('Google Login Failed');
   };
+/*
 
   return (
     <GoogleOAuthProvider clientId="512472495668-hql16qpfhgkk4hft906rjb5m65rn720d.apps.googleusercontent.com" >
@@ -74,10 +70,27 @@ const TestLogin = () => {
           onSuccess={handleSuccess}
           onError={handleError}
           scope="openid profile email"
+          login_uri={login_uri}
+          ux_mode="redirect"
         />
       </div>
     </GoogleOAuthProvider>
   );
+*/
+
+  return (
+    <div>
+      <h1>Login with Google</h1>
+      <GoogleLogin
+        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+        buttonText="Login with Google"
+        onSuccess={handleSuccess}
+        onFailure={handleError}
+        cookiePolicy={'single_host_origin'}
+      />
+    </div>
+  );
+
 };
 
 export default TestLogin;
