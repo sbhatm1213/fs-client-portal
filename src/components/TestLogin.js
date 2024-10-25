@@ -1,6 +1,6 @@
 // login.js
 import React, { useEffect } from 'react';
-import { GoogleLogin } from 'react-google-login';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { setAccessToken, getAccessToken } from '../utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { Client, Account, Functions } from 'appwrite';
@@ -36,7 +36,6 @@ const TestLogin = () => {
 
 
   const handleSuccess = async (credentialResponse) => {
-        console.log(credentialResponse);
         const googleToken = credentialResponse.credential;
 
         try {
@@ -60,7 +59,6 @@ const TestLogin = () => {
   const handleError = () => {
     console.log('Google Login Failed');
   };
-/*
 
   return (
     <GoogleOAuthProvider clientId="512472495668-hql16qpfhgkk4hft906rjb5m65rn720d.apps.googleusercontent.com" >
@@ -76,21 +74,6 @@ const TestLogin = () => {
       </div>
     </GoogleOAuthProvider>
   );
-*/
-
-  return (
-    <div>
-      <h1>Login with Google</h1>
-      <GoogleLogin
-        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-        buttonText="Login with Google"
-        onSuccess={handleSuccess}
-        onFailure={handleError}
-        cookiePolicy={'single_host_origin'}
-      />
-    </div>
-  );
-
 };
 
 export default TestLogin;
