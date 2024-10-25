@@ -1,5 +1,5 @@
 // /src/services/appwriteClient.js
-import { Client, Databases } from 'appwrite';
+import { Client, Databases, Functions } from 'appwrite';
 
 const endPoint = process.env.REACT_APP_APPWRITE_ENDPOINT;
 const projectId = process.env.REACT_APP_APPWRITE_PROJECT_ID;
@@ -9,5 +9,6 @@ client.setEndpoint(endPoint);
 client.setProject(projectId);
 
 const databases = new Databases(client);
+const functions = new Functions(client);
 
-export { client, databases };
+export { client, databases, functions };

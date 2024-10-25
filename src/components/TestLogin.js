@@ -1,13 +1,12 @@
 // login.js
 import React, { useEffect } from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider, GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import { setAccessToken, getAccessToken } from '../utils/auth';
 import { useNavigate } from 'react-router-dom';
-import { Client, Account, Functions } from 'appwrite';
-import { client } from '../services/appwriteClient';
+import { Client, Account } from 'appwrite';
+import { client, functions } from '../services/appwriteClient';
 import { useAuth } from '../services/TestAuthProvider';
 
-const functions = new Functions(client);
 
 const TestLogin = () => {
   const navigate = useNavigate();
@@ -19,8 +18,19 @@ const TestLogin = () => {
 
 
   useEffect(() => {
-        console.log(login_uri);
-  }, []);
+    console.log("heeeerrrreeeee");
+
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token'); // Adjust to match your POST response
+    console.log(token);
+
+    if (token) {
+      sessionStorage.setItem('access_token', token);
+      navigate('/dashboard');
+    } else {
+      console.error('No token received');
+    }
+  }, [navigate]);
 
 
 //    const createSession = async (accessToken) => {
@@ -36,15 +46,26 @@ const TestLogin = () => {
 
 
   const handleSuccess = async (credentialResponse) => {
+        console.log(credentialResponse);
         const googleToken = credentialResponse.credential;
 
         try {
-                const functionId = process.env.REACT_APP_GOOGLE_OAUTH_FUNC_ID; // Accessing the function ID
-            console.log(functionId);
+        console.log("heeerrrrreeeeee");
+                const functionId = process.env.REACT_APP_GOOGLE_OAUTH_FUNC_ID;
+
           const result = await functions.createExecution(
-                                functionId,
-                                JSON.stringify({ token: googleToken })
+                                '671a8f8100080058d95c',
+                                { token: googleToken }
                          );
+
+
+//            appwrite.functions.createExecution(functionId, JSON.stringify({ token: googleToken }))
+//              .then(response => {
+//                console.log('Function execution response:', response);
+//              })
+//              .catch(error => {
+//                console.error('Error executing function:', error);
+//              });
 
           if (result.response.success) {
             window.location.href = '/dashboard';
@@ -53,6 +74,7 @@ const TestLogin = () => {
           }
         } catch (error) {
           console.error('Error during login:', error);
+
         }
   };
 
@@ -67,13 +89,12 @@ const TestLogin = () => {
         <GoogleLogin
           onSuccess={handleSuccess}
           onError={handleError}
-          scope="openid profile email"
-          login_uri={login_uri}
-          ux_mode="redirect"
         />
       </div>
     </GoogleOAuthProvider>
   );
 };
+
+
 
 export default TestLogin;

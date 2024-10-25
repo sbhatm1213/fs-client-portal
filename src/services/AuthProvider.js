@@ -8,7 +8,6 @@ import { client } from './appwriteClient';
 const AuthContext = createContext();
 const account = new Account(client);
 
-
 export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
