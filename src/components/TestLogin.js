@@ -18,7 +18,6 @@ const TestLogin = () => {
 
 
   useEffect(() => {
-    console.log("heeeerrrreeeee");
 
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token'); // Adjust to match your POST response
@@ -50,12 +49,11 @@ const TestLogin = () => {
         const googleToken = credentialResponse.credential;
 
         try {
-        console.log("heeerrrrreeeeee");
                 const functionId = process.env.REACT_APP_GOOGLE_OAUTH_FUNC_ID;
 
           const result = await functions.createExecution(
                                 '671a8f8100080058d95c',
-                                { token: googleToken }
+                                JSON.stringify({ token: googleToken })
                          );
 
 
@@ -67,11 +65,18 @@ const TestLogin = () => {
 //                console.error('Error executing function:', error);
 //              });
 
-          if (result.response.success) {
-            window.location.href = '/dashboard';
-          } else {
-            console.error('Session creation failed:', result.response.error);
-          }
+//          if (result.success) {
+
+            console.log("succcessss");
+                        console.log(result);
+            const account = new Account(client);
+            console.log(account.get());
+
+//            window.location.href = '/dashboard';
+//            navigate('/dashboard');
+//          } else {
+//            console.error('Session creation failed:', result.response.error);
+//          }
         } catch (error) {
           console.error('Error during login:', error);
 
