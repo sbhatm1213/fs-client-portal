@@ -16,6 +16,26 @@ const theme = createTheme({
             maxWidth: 220
         },
     },
+    components: {
+        MuiTableCell: {
+          styleOverrides: {
+            head: {
+    //          color: 'rgba(0, 0, 0, 0.6)',
+                fontSize: '0.82rem',
+            },
+          },
+        },
+        MuiCheckbox: {
+          styleOverrides: {
+            root: {
+              color: '#eff8f9',
+              '&.Mui-checked': {
+                color: '#11609f',
+              },
+            },
+          },
+        },
+  },
 });
 
 export default theme;

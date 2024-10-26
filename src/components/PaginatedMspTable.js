@@ -10,7 +10,8 @@ import {
   TextField,
   Paper,
   TableSortLabel,
-  Chip
+  Chip,
+  Checkbox
 } from '@mui/material';
 import theme from '../theme.js';
 import PaginatedClientTable from './PaginatedClientTable.js';
@@ -78,7 +79,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
 
 
   return (
-    <Paper>
+    <Paper >
       <TextField
         label="Filter by Name"
         variant="outlined"
@@ -88,10 +89,10 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
         style={{ margin: '16px', width: '300px' }}
       />
       <TableContainer>
-        <Table>
-          <TableHead sx={{ fontWeight: 'bold' }}>
+        <Table stickyHeader size='small'>
+          <TableHead sx={{ fontWeight: 'bold', fontSize: '0.8rem' }}>
             <TableRow>
-              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
+              <TableCell sx={{ fontWeight: 'bold', width: '22%' }}>
                 <TableSortLabel
                   active={orderBy === 'name'}
                   direction={orderBy === 'name' ? order : 'asc'}
@@ -100,7 +101,10 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   MSP Name
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
+              <TableCell align='center' sx={{ fontWeight: 'bold', width: '8%' }}>
+                  Type
+              </TableCell>
+              <TableCell align='center' sx={{ fontWeight: 'bold', width: '22%' }}>
                 <TableSortLabel
                   active={orderBy === 'license_type'}
                   direction={orderBy === 'license_type' ? order : 'asc'}
@@ -109,7 +113,16 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   Licence Type
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
+              <TableCell align='center' sx={{ fontWeight: 'bold', width: '8%' }}>
+                <TableSortLabel
+                  active={orderBy === 'spla_license'}
+                  direction={orderBy === 'spla_license' ? order : 'asc'}
+                  onClick={() => handleRequestSort('spla_license')}
+                >
+                  SPLA License
+                </TableSortLabel>
+              </TableCell>
+              <TableCell align='right' sx={{ fontWeight: 'bold', width: '12%' }}>
                 <TableSortLabel
                   active={orderBy === 'purchased_licenses'}
                   direction={orderBy === 'purchased_licenses' ? order : 'asc'}
@@ -118,7 +131,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   Purchased Licences
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
+              <TableCell align='right' sx={{ fontWeight: 'bold', width: '12%' }}>
                 <TableSortLabel
                   active={orderBy === 'devices'}
                   direction={orderBy === 'devices' ? order : 'asc'}
@@ -127,7 +140,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   Devices
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
+              <TableCell align='center' sx={{ fontWeight: 'bold', width: '16%' }}>
                 <TableSortLabel
                   active={orderBy === 'client'}
                   direction={orderBy === 'client' ? order : 'asc'}
@@ -144,10 +157,15 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
               .map((row) => (<>
                 <TableRow key={row.$id} selected={row.$id === selectedMsp} >
                   <TableCell>{row.name}</TableCell>
+                  <TableCell align='center'>Reseller</TableCell>
                   <TableCell>{row.license_type}</TableCell>
-                  <TableCell>{row.purchased_licenses}</TableCell>
-                  <TableCell>{row.devices}</TableCell>
-                  <TableCell>
+                  <TableCell align='center'>
+                        <Checkbox size='small'
+                                  checked={row.spla_license} disabled />
+                  </TableCell>
+                  <TableCell align='right'>{row.purchased_licenses}</TableCell>
+                  <TableCell align='right'>{row.devices}</TableCell>
+                  <TableCell align='center'>
                     <Chip
                         label={`${row.client.length} Client(s)`}
                             sx={{
@@ -164,7 +182,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                 {
                             selectedMsp && selectedMsp == row.$id ? (
                           <TableRow>
-                            <TableCell colSpan={6}>
+                            <TableCell colSpan={7}>
                                 <PaginatedClientTable mspId={selectedMsp} clientRows={clientList} closeTable={closeClientTable} />
                             </TableCell>
                           </TableRow>

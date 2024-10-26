@@ -12,7 +12,8 @@ import {
   TableSortLabel,
   Chip,
   IconButton,
-  Box
+  Box,
+  Checkbox
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import theme from '../theme.js';
@@ -67,7 +68,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
   });
 
   return (
-    <Paper>
+    <Paper style={{ width: '90%', margin: 'auto' }}>
           <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
 
       <TextField
@@ -83,10 +84,10 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
         </IconButton>
         </Box>
       <TableContainer>
-        <Table>
+        <Table size='small'>
           <TableHead>
             <TableRow>
-              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
+              <TableCell  sx={{ fontWeight: 'bold', width: '30%' }}>
                 <TableSortLabel
                   active={orderBy === 'name'}
                   direction={orderBy === 'name' ? order : 'asc'}
@@ -95,7 +96,10 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
                   Client Name
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
+              <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%' }}>
+                  Type
+              </TableCell>
+              <TableCell align='center' sx={{ fontWeight: 'bold', width: '30%' }}>
                 <TableSortLabel
                   active={orderBy === 'license_type'}
                   direction={orderBy === 'license_type' ? order : 'asc'}
@@ -104,7 +108,16 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
                   Licence Type
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
+              <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%' }}>
+                <TableSortLabel
+                  active={orderBy === 'spla_license'}
+                  direction={orderBy === 'spla_license' ? order : 'asc'}
+                  onClick={() => handleRequestSort('spla_license')}
+                >
+                  SPLA Licence
+                </TableSortLabel>
+              </TableCell>
+              <TableCell align='right' sx={{ fontWeight: 'bold', width: '12%' }}>
                 <TableSortLabel
                   active={orderBy === 'total_licenses'}
                   direction={orderBy === 'total_licenses' ? order : 'asc'}
@@ -113,7 +126,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
                   Total Licences
                 </TableSortLabel>
               </TableCell>
-              <TableCell  sx={{ fontWeight: 'bold', width: { xs: '100px', sm: '150px', md: '180px' } }}>
+              <TableCell align='right' sx={{ fontWeight: 'bold', width: '12%' }}>
                 <TableSortLabel
                   active={orderBy === 'active_licenses'}
                   direction={orderBy === 'active_licenses' ? order : 'asc'}
@@ -130,9 +143,13 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
               .map((row) => (
                 <TableRow key={row.$id}>
                   <TableCell>{row.name}</TableCell>
+                  <TableCell align='center'>Corp</TableCell>
                   <TableCell>{row.license_type}</TableCell>
-                  <TableCell>{row.total_licenses}</TableCell>
-                  <TableCell>{row.active_licenses}</TableCell>
+                  <TableCell align='center'>
+                        <Checkbox size='small' checked={row.spla_license} disabled />
+                  </TableCell>
+                  <TableCell align='right'>{row.total_licenses}</TableCell>
+                  <TableCell align='right'>{row.active_licenses}</TableCell>
                 </TableRow>
               ))}
           </TableBody>

@@ -90,7 +90,7 @@ const MspCountComponent = ({ userRole, mspList }) => {
               <Typography variant="h5">
                   {totalDevicesCount}
                 </Typography>
-              <Typography variant="body1">Total Devices(s)</Typography>
+              <Typography variant="body1">Total Device(s)</Typography>
             </CardContent>
         </Card>
         </Box>

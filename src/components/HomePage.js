@@ -166,23 +166,23 @@ const HomePage = () => {
   return (
         <ThemeProvider theme={theme}>
 
-  <Grid container direction="column" sx={{ minHeight: '80vh' }}>
+  <Grid  direction="column" sx={{ minHeight: '60vh' }}>
       {/* AppBar at the top */}
-      <Grid item xs={12}>
-        <AppBar position="static"  sx={{ backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
+        <AppBar  position="sticky" style={{ top: 0, zIndex: 1100, backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
           <Toolbar>
-            <Typography variant="h6"  style={{ flexGrow: 1 }} >FS Client Portal</Typography>
+            <Typography variant="h6"  style={{ flexGrow: 1, fontWeight: 'bold', fontSize: '0.95rem' }} >FS Client Portal</Typography>
             <Tooltip title={user.name} arrow>
                  <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} signOut={signOut} />
           </Tooltip>
           </Toolbar>
         </AppBar>
-      </Grid>
+
+      {/* Everything below Top Appbar */}
 
     <Grid container >
       {/* Left Sidebar */}
-        <Grid item xs={2}>
-          <Box sx={{ width: '100%' }}>
+        <Grid item xs={2} >
+          <Box sx={{ width: '100%' }} >
               <List component="nav" >
                 <ListItemButton >
                   <ListItemIcon>
@@ -221,12 +221,10 @@ const HomePage = () => {
         </Grid>
 
       {/* Main content area */}
-
       <Grid item xs={10} sx={{ flexGrow: 1, p: 2 }}>
         {renderContent()}
       </Grid>
-
-      </Grid>
+    </Grid>
 
     </Grid>
 
