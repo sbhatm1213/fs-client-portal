@@ -37,6 +37,7 @@ const HomePage = () => {
     const [showAllMssp, setShowAllMssp] = useState(true);
     const [selectedMssp, setSelectedMssp] = useState(null);
     const [selectedMsspName, setSelectedMsspName] = useState(null);
+    const [msspUserList, setMsspUserList] = useState(null);
     const [mspList, setMspList] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -64,6 +65,25 @@ const HomePage = () => {
       };
 
 
+        const fetchMsspUsers = async (msspId) => {
+          try {
+                    databases.listDocuments(
+                            databaseID,
+                            userProfCollectionID,
+                            [Query.equal('mssp_id', msspId)]
+                      ).then(response => {
+                            let usersOfMssp = response.documents;
+    //                    console.log(loggedInUserRole); // Access documents here
+                        setMsspUserList(usersOfMssp);
+                        })
+              } catch (err) {
+                setError(err);
+              } finally {
+                setLoading(false);
+              }
+        }
+
+
     const getUserProfiles = async () => {
            try {
                 databases.listDocuments(
@@ -79,22 +99,22 @@ const HomePage = () => {
 //                        console.log(response.documents[0].mssp_id); // Access documents here
 
                         let msspQueryId = response.documents[0].mssp_id;
-                            if (msspQueryId){
+                            if (msspQueryId) {
                                     databases.listDocuments(
                                         databaseID,
                                         msspCollectionID,
                                         [Query.equal('$id', msspQueryId)],
                                         1
                                         ).then(msspresponse => {
-//                                    console.log(msspresponse.documents); // Access documents here
-                                    setSelectedMssp(msspQueryId);
-                                    setSelectedMsspName(msspresponse.documents[0].name);
-                                    setMspList(msspresponse.documents[0].msp);
-                                  })
-                                  .catch(error => {
-                                    console.error(error);
-                                  });
-                                  }
+        //                                    console.log(msspresponse.documents); // Access documents here
+                                            setSelectedMssp(msspQueryId);
+                                            setSelectedMsspName(msspresponse.documents[0].name);
+                                            setMspList(msspresponse.documents[0].msp);
+                                            fetchMsspUsers(msspQueryId);
+                                      }).catch(error => {
+                                        console.error(error);
+                                      });
+                            }
                     }
                   })
                   .catch(error => {
@@ -165,6 +185,7 @@ const HomePage = () => {
                                         userProfile={userRole}
                                         msspId={selectedMssp}
                                         msspName={selectedMsspName}
+                                        msspUserInfo={msspUserList}
                                         mspInfo={null} />;
       default:
         return <HeimdalProductCard />;
