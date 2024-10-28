@@ -161,7 +161,11 @@ const HomePage = () => {
             </>
         );
       case 'user_mgmt_nav':
-        return <UserManagementComponent userData={user} userProfile={null} msspInfo={null} mspInfo={null} />;
+        return <UserManagementComponent userData={user}
+                                        userProfile={userRole}
+                                        msspId={selectedMssp}
+                                        msspName={selectedMsspName}
+                                        mspInfo={null} />;
       default:
         return <HeimdalProductCard />;
     }
