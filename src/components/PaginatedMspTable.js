@@ -79,7 +79,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
 
 
   return (
-    <Paper >
+    <Paper elevation={2}>
       <TextField
         label="Filter by Name"
         variant="outlined"

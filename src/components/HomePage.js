@@ -18,11 +18,13 @@ import PaginatedMspTable  from './PaginatedMspTable.js'
 import MspComponent  from './MspComponent.js'
 import ProfileIconComponent  from './ProfileIconComponent.js'
 import HeimdalProductCard  from './HeimdalProductCard.js'
+import UserManagementComponent  from './UserManagementComponent.js'
 
 
 const HomePage = () => {
 
   const { user, signOut } = useAuth();
+
 //  console.log(user);
 //  const navigate = useNavigate();
 //
@@ -113,6 +115,10 @@ const HomePage = () => {
     }, []);
 
 
+    const handleUserMgmt = () => {
+        setSelectedNavKey('user_mgmt_nav');
+    };
+
   const renderContent = () => {
     switch (selectedNavKey) {
       case 'product_nav':
@@ -126,7 +132,6 @@ const HomePage = () => {
         </Box>
       {
         userRole === 'admin' &&
-
         <Box component="main" display="flex">
           <Grid item spacing={6} my={4}>
           {
@@ -142,10 +147,8 @@ const HomePage = () => {
           </Grid>
         </Box>
         }
-
       {
         userRole === 'mssp' &&
-
             <Box component="main" display="flex">
               <Grid item spacing={6} my={4}>
             {
@@ -157,6 +160,8 @@ const HomePage = () => {
       }
             </>
         );
+      case 'user_mgmt_nav':
+        return <UserManagementComponent userData={user} userProfile={null} msspInfo={null} mspInfo={null} />;
       default:
         return <HeimdalProductCard />;
     }
@@ -171,14 +176,11 @@ const HomePage = () => {
         <AppBar  position="sticky" style={{ top: 0, zIndex: 1100, backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
           <Toolbar>
             <Typography variant="h6"  style={{ flexGrow: 1, fontWeight: 'bold', fontSize: '0.95rem' }} >FS Client Portal</Typography>
-            <Tooltip title={user.name} arrow>
-                 <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} signOut={signOut} />
-          </Tooltip>
+                 <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} signOut={signOut} handleUserMgmt={handleUserMgmt} />
           </Toolbar>
         </AppBar>
 
       {/* Everything below Top Appbar */}
-
     <Grid container >
       {/* Left Sidebar */}
         <Grid item xs={2} >

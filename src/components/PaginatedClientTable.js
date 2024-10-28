@@ -68,7 +68,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
   });
 
   return (
-    <Paper style={{ width: '90%', margin: 'auto' }}>
+    <Paper style={{ width: '90%', margin: 'auto' }} elevation={5}>
           <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
 
       <TextField
