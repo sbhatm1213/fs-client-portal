@@ -9,20 +9,21 @@ import { useNavigate } from 'react-router-dom';
 import theme from '../theme.js';
 
 
-const HeimdalProductCard = () => {
+const SentinelOneProductCard = () => {
 
     return (
-        <Box mt={1}  >
+        <Box mt={1} ml={3}>
         <Card elevation={4} sx={{
                     maxWidth: theme.palette.card.maxWidth }} >
             <CardContent>
               <Typography variant="h5"  component="div" mb={1} >
-                  Heimdal
+                  SentinelOne
                 </Typography>
               <Typography variant="caption" mt={4} >
-                    Access comprehensive customer data from Heimdal Security's Customers API.
-                    Our platform delivers detailed information such as customer status, subscribed products and license usage,
-                    helping you manage security services efficiently.
+                    Gain valuable insights into your customers' endpoint security through SentinelOne's
+                    comprehensive data. Our platform offers real-time visibility into threat detection,
+                    security coverage, and usage metrics, enabling streamlined management and enhanced protection
+                    for all your managed services.
               </Typography>
             </CardContent>
         </Card>
@@ -31,4 +32,4 @@ const HeimdalProductCard = () => {
 }
 
 
-export default HeimdalProductCard;
+export default SentinelOneProductCard;

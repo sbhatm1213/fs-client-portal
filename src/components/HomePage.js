@@ -18,6 +18,7 @@ import PaginatedMspTable  from './PaginatedMspTable.js'
 import MspComponent  from './MspComponent.js'
 import ProfileIconComponent  from './ProfileIconComponent.js'
 import HeimdalProductCard  from './HeimdalProductCard.js'
+import SentinelOneProductCard  from './SentinelOneProductCard.js'
 import UserManagementComponent  from './UserManagementComponent.js'
 
 
@@ -142,7 +143,10 @@ const HomePage = () => {
   const renderContent = () => {
     switch (selectedNavKey) {
       case 'product_nav':
-        return <HeimdalProductCard />;
+        return (<Box display='flex'>
+                <HeimdalProductCard />
+                <SentinelOneProductCard />
+                </Box>);
       case 'heimdal_nav':
         return (
             <>
