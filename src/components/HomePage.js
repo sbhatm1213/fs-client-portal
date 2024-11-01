@@ -104,13 +104,13 @@ const HomePage = () => {
                                     databases.listDocuments(
                                         databaseID,
                                         msspCollectionID,
-                                        [Query.equal('$id', msspQueryId)],
+                                        [Query.equal('heimdal_id', msspQueryId)],
                                         1
                                         ).then(msspresponse => {
-        //                                    console.log(msspresponse.documents); // Access documents here
+                                            console.log(msspresponse.documents); // Access documents here
                                             setSelectedMssp(msspQueryId);
-                                            setSelectedMsspName(msspresponse.documents[0].name);
-                                            setMspList(msspresponse.documents[0].msp);
+                                            setSelectedMsspName(msspresponse.documents[0].mssp_name);
+                                            setMspList(msspresponse.documents[0].heimdal_msp_ids);
                                             fetchMsspUsers(msspQueryId);
                                       }).catch(error => {
                                         console.error(error);

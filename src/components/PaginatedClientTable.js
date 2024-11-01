@@ -13,18 +13,22 @@ import {
   Chip,
   IconButton,
   Box,
-  Checkbox
+  Checkbox,
+  Button
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import DownloadIcon from '@mui/icons-material/Download';
+import Papa from 'papaparse';
 import theme from '../theme.js';
 
 
-const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
+
+const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filterText, setFilterText] = useState('');
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('client_name');
 
 
     const handleTableClose = (event) => {
@@ -53,7 +57,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
 
   // Filter rows based on filterText
   const filteredRows = clientRows.filter((row) =>
-    row.name.toLowerCase().includes(filterText.toLowerCase())
+    row.client_name.toLowerCase().includes(filterText.toLowerCase())
   );
 
   // Sort filtered rows
@@ -67,37 +71,78 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
     return 0;
   });
 
+
+      const exportToCSV = () => {
+        const processedRows = sortedRows.map((row) => ({
+            'ID': row.$id,
+            'NAME': row.client_name,
+            'CUSTOMER TYPE': row.customer_type,
+            'LICENSE TYPE': row.license_type,
+            'SPLA': row.spla_license,
+            'DEVICES': row.active_licenses,
+            'PURCHASED LICENSES': row.total_licenses,
+        }));
+        console.log(processedRows);
+      const csv = Papa.unparse(processedRows);
+
+      const date = new Date();
+      const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      const fileName = `CLIENT_LIST_OF_${mspName}_${dateString}.csv`;
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      link.click();
+    };
+
+
   return (
     <Paper style={{ width: '90%', margin: 'auto' }} elevation={5}>
-          <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <Box display="flex" alignItems="center" justifyContent="flex-end" width="100%" mb={0}>
 
-      <TextField
-        label="Filter by Name"
-        variant="outlined"
-        size="small"
-        value={filterText}
-        onChange={handleFilterChange}
-        style={{ margin: '16px', width: '300px' }}
-      />
       <IconButton onClick={(event) => handleTableClose(event)} >
           <CloseIcon fontSize="small"  />
         </IconButton>
         </Box>
       <TableContainer>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '16px' }}>
+          <TextField
+            label="Filter by Name"
+            variant="outlined"
+            size="small"
+            value={filterText}
+            onChange={handleFilterChange}
+            style={{ width: '300px' }}
+          />
+          <Button variant="contained"
+                      startIcon={<DownloadIcon />}
+                      onClick={exportToCSV}
+                      sx={{ textTransform: "none", fontWeight: "medium" }} >
+                Export to CSV
+          </Button>
+          </div>
+
         <Table size='small'>
           <TableHead>
             <TableRow>
               <TableCell  sx={{ fontWeight: 'bold', width: '30%' }}>
                 <TableSortLabel
-                  active={orderBy === 'name'}
-                  direction={orderBy === 'name' ? order : 'asc'}
-                  onClick={() => handleRequestSort('name')}
+                  active={orderBy === 'client_name'}
+                  direction={orderBy === 'client_name' ? order : 'asc'}
+                  onClick={() => handleRequestSort('client_name')}
                 >
                   Client Name
                 </TableSortLabel>
               </TableCell>
               <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%' }}>
+                <TableSortLabel
+                  active={orderBy === 'customer_type'}
+                  direction={orderBy === 'customer_type' ? order : 'asc'}
+                  onClick={() => handleRequestSort('customer_type')}
+                >
                   Type
+                </TableSortLabel>
               </TableCell>
               <TableCell align='center' sx={{ fontWeight: 'bold', width: '30%' }}>
                 <TableSortLabel
@@ -142,8 +187,8 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow key={row.$id}>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell align='center'>Corp</TableCell>
+                  <TableCell>{row.client_name}</TableCell>
+                  <TableCell align='center'>{row.customer_type.toUpperCase()}</TableCell>
                   <TableCell>{row.license_type}</TableCell>
                   <TableCell align='center'>
                         <Checkbox size='small' checked={row.spla_license} disabled />
