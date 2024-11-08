@@ -35,6 +35,14 @@ const theme = createTheme({
             },
           },
         },
+        MuiButton: {
+         styleOverrides: {
+            root: {
+              backgroundColor: '#11609f', // Set default background color
+              color: '#eff8f9',
+            },
+         },
+      },
   },
 });
 

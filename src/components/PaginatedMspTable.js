@@ -11,9 +11,12 @@ import {
   Paper,
   TableSortLabel,
   Chip,
-  Checkbox
+  Checkbox,
+  Button
 } from '@mui/material';
 import theme from '../theme.js';
+import DownloadIcon from '@mui/icons-material/Download';
+import Papa from 'papaparse';
 import PaginatedClientTable from './PaginatedClientTable.js';
 
 
@@ -25,6 +28,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
   const [orderBy, setOrderBy] = useState('name');
 
   const [selectedMsp, setSelectedMsp] = useState(null);
+  const [selectedMspName, setSelectedMspName] = useState(null);
   const [clientList, setClientList] = useState([]);
 
   const handleChangePage = (event, newPage) => {
@@ -67,6 +71,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
     event.preventDefault();
 //        console.log(clickedMssp);
     setSelectedMsp(clickedMsp.id);
+    setSelectedMspName(clickedMsp.name);
 //    onClickMsp(clickedMsp, clientList);
     setClientList(clickedMsp.clients);
   };
@@ -77,18 +82,72 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
     setClientList([]);
   };
 
+    const exportToCSV = () => {
+
+        const processedRows = [];
+
+        for (let i = 0; i < sortedRows.length; i++) {
+            const row = sortedRows[i];
+            processedRows.push({
+                'ID': row.id,
+                'NAME': row.name,
+                'CUSTOMER TYPE': row.customer_type,
+                'LICENSE TYPE': row.license_type,
+                'SPLA': row.spla_license,
+                'DEVICES': row.devices,
+                'PURCHASED LICENSES': row.purchased_licenses,
+                'CLIENT COUNT': row.clients.length,
+            });
+
+            // Loop through clients
+            for (let j = 0; j < row.clients.length; j++) {
+                const clientObj = row.clients[j];
+                processedRows.push({
+                    'ID': clientObj.id,
+                    'NAME': clientObj.name,
+                    'CUSTOMER TYPE': clientObj.customer_type,
+                    'LICENSE TYPE': clientObj.license_type,
+                    'SPLA': clientObj.spla_license,
+                    'DEVICES': clientObj.active_licenses,
+                    'PURCHASED LICENSES': clientObj.purchased_licenses
+                });
+            }
+        }
+        console.log(processedRows);
+      const csv = Papa.unparse(processedRows);
+
+      const date = new Date();
+      const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      const fileName = `MSP_LIST_${dateString}.csv`;
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      link.click();
+    };
+
 
   return (
     <Paper >
-      <TextField
-        label="Filter by Name"
-        variant="outlined"
-        size="small"
-        value={filterText}
-        onChange={handleFilterChange}
-        style={{ margin: '16px', width: '300px' }}
-      />
       <TableContainer>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '16px' }}>
+          <TextField
+            label="Filter by Name"
+            variant="outlined"
+            size="small"
+            value={filterText}
+            onChange={handleFilterChange}
+            style={{ width: '300px' }}
+          />
+          <Button variant="contained"
+                  startIcon={<DownloadIcon />}
+                  onClick={exportToCSV}
+                  sx={{ textTransform: "none", fontWeight: "medium" }} >
+            Export to CSV
+          </Button>
+        </div>
+
         <Table stickyHeader size='small'>
           <TableHead sx={{ fontWeight: 'bold', fontSize: '0.8rem' }}>
             <TableRow>
@@ -102,7 +161,13 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                 </TableSortLabel>
               </TableCell>
               <TableCell align='center' sx={{ fontWeight: 'bold', width: '8%' }}>
+                <TableSortLabel
+                  active={orderBy === 'customer_type'}
+                  direction={orderBy === 'customer_type' ? order : 'asc'}
+                  onClick={() => handleRequestSort('customer_type')}
+                >
                   Type
+                </TableSortLabel>
               </TableCell>
               <TableCell align='center' sx={{ fontWeight: 'bold', width: '22%' }}>
                 <TableSortLabel
@@ -157,7 +222,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
               .map((row) => (<>
                 <TableRow key={row.id} selected={row.id === selectedMsp} >
                   <TableCell>{row.name}</TableCell>
-                  <TableCell align='center'>Reseller</TableCell>
+                  <TableCell align='center'>{row.customer_type.toUpperCase()}</TableCell>
                   <TableCell>{row.license_type}</TableCell>
                   <TableCell align='center'>
                         <Checkbox size='small'
@@ -172,7 +237,12 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                               backgroundColor: theme.palette.card.main,
                               color: theme.palette.card.contrastText,
                               width: '100px',
-                              textAlign: 'center'
+                              textAlign: 'center',
+                                '&:hover': {
+                                  backgroundColor: theme.palette.card.contrastText,
+                                  color: theme.palette.card.main,
+                                },
+
                             }}
                         variant="outlined"
                         onClick={(event) => handleMspSelection(event, row)}
@@ -183,7 +253,11 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                             selectedMsp && selectedMsp == row.id ? (
                           <TableRow>
                             <TableCell colSpan={7}>
-                                <PaginatedClientTable mspId={selectedMsp} clientRows={clientList} closeTable={closeClientTable} />
+                                <PaginatedClientTable mspId={selectedMsp}
+                                                      clientRows={clientList}
+                                                      closeTable={closeClientTable}
+                                                      mspName={selectedMspName}
+                                                      />
                             </TableCell>
                           </TableRow>
                           ) : null
