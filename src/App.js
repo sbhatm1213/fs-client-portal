@@ -34,16 +34,9 @@ const AppContent = () => {
   const { user } = useAuth(); // Get user from Auth context
 
   return (
-    <Routes>
-      {/* Route for login */}
-      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<HomePage />} />
 
-      {/* Route for main app/dashboard */}
-      <Route path="/dashboard" element={user ? <HomePage /> : <Navigate to="/login" />} />
-
-      {/* Redirect to login for all other paths if not logged in */}
-      <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
-    </Routes>
   );
 };
 
@@ -60,3 +53,23 @@ const App = () => {
 };
 
 export default App;
+
+/*
+
+<Routes>
+      {*/
+/* Route for login *//*
+}
+      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+
+      {*/
+/* Route for main app/dashboard *//*
+}
+      <Route path="/dashboard" element={user ? <HomePage /> : <Navigate to="/login" />} />
+
+      {*/
+/* Redirect to login for all other paths if not logged in *//*
+}
+      <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
+
+    </Routes>*/
