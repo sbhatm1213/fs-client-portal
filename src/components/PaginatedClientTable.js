@@ -119,9 +119,9 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
               </TableCell>
               <TableCell align='right' sx={{ fontWeight: 'bold', width: '12%' }}>
                 <TableSortLabel
-                  active={orderBy === 'total_licenses'}
-                  direction={orderBy === 'total_licenses' ? order : 'asc'}
-                  onClick={() => handleRequestSort('total_licenses')}
+                  active={orderBy === 'purchased_licenses'}
+                  direction={orderBy === 'purchased_licenses' ? order : 'asc'}
+                  onClick={() => handleRequestSort('purchased_licenses')}
                 >
                   Total Licences
                 </TableSortLabel>
@@ -141,14 +141,14 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable }) => {
             {sortedRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
-                <TableRow key={row.$id}>
+                <TableRow key={row.id}>
                   <TableCell>{row.name}</TableCell>
                   <TableCell align='center'>Corp</TableCell>
                   <TableCell>{row.license_type}</TableCell>
                   <TableCell align='center'>
                         <Checkbox size='small' checked={row.spla_license} disabled />
                   </TableCell>
-                  <TableCell align='right'>{row.total_licenses}</TableCell>
+                  <TableCell align='right'>{row.purchased_licenses}</TableCell>
                   <TableCell align='right'>{row.active_licenses}</TableCell>
                 </TableRow>
               ))}

@@ -21,7 +21,8 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize navigate object
 
 //  const { signInWithGoogle } = useAuth();
-  const { user, signInWithAzure, signOut } = useAuth();
+  const { user, signInWithGoogle, signInWithAzure, signOut } = useAuth();
+/*
 
   const signInWithGoogle = async ({navigate}) => {
     window.location.href = "http://127.0.0.1:5000/login";  // URL to Flask Google OAuth login route
@@ -38,6 +39,7 @@ const Login = () => {
       })
       .catch(error => console.error("Authorization error:", error));
   };
+*/
 
 
   const handleGoogleLogin = async () => {

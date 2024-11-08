@@ -66,9 +66,9 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
   const handleMspSelection = (event, clickedMsp) => {
     event.preventDefault();
 //        console.log(clickedMssp);
-    setSelectedMsp(clickedMsp.$id);
+    setSelectedMsp(clickedMsp.id);
 //    onClickMsp(clickedMsp, clientList);
-    setClientList(clickedMsp.client);
+    setClientList(clickedMsp.clients);
   };
 
   const closeClientTable = (event) => {
@@ -142,9 +142,9 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
               </TableCell>
               <TableCell align='center' sx={{ fontWeight: 'bold', width: '16%' }}>
                 <TableSortLabel
-                  active={orderBy === 'client'}
-                  direction={orderBy === 'client' ? order : 'asc'}
-                  onClick={() => handleRequestSort('client')}
+                  active={orderBy === 'clients'}
+                  direction={orderBy === 'clients' ? order : 'asc'}
+                  onClick={() => handleRequestSort('clients')}
                 >
                   Client Count
                 </TableSortLabel>
@@ -155,7 +155,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
             {sortedRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (<>
-                <TableRow key={row.$id} selected={row.$id === selectedMsp} >
+                <TableRow key={row.id} selected={row.id === selectedMsp} >
                   <TableCell>{row.name}</TableCell>
                   <TableCell align='center'>Reseller</TableCell>
                   <TableCell>{row.license_type}</TableCell>
@@ -167,7 +167,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   <TableCell align='right'>{row.devices}</TableCell>
                   <TableCell align='center'>
                     <Chip
-                        label={`${row.client.length} Client(s)`}
+                        label={`${row.clients.length} Client(s)`}
                             sx={{
                               backgroundColor: theme.palette.card.main,
                               color: theme.palette.card.contrastText,
@@ -180,7 +180,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   </TableCell>
                 </TableRow>
                 {
-                            selectedMsp && selectedMsp == row.$id ? (
+                            selectedMsp && selectedMsp == row.id ? (
                           <TableRow>
                             <TableCell colSpan={7}>
                                 <PaginatedClientTable mspId={selectedMsp} clientRows={clientList} closeTable={closeClientTable} />

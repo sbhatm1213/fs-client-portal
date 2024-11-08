@@ -61,6 +61,26 @@ const HomePage = () => {
         setMspList(mspIdList);
       };
 
+    const getAllMssps = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/mssps');
+
+            const data = await response.json();
+
+//            console.log(data[0].mssp.id);
+//            console.log(data[0].mssp.name);
+//                        console.log(data[0].msps.length);
+
+            console.log(data[0].msps[0]);
+            // Log or set state with data
+            setSelectedMssp(data[0].mssp.id);
+            setSelectedMsspName(data[0].mssp.name);
+            setMspList(data[0].msps);
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
 
     const getUserProfiles = async () => {
            try {
@@ -71,14 +91,17 @@ const HomePage = () => {
                         1
                         ).then(response => {
                         let loggedInUserRole = response.documents[0].role;
-//                    console.log(loggedInUserRole); // Access documents here
+                    console.log(response); // Access documents here
                     setUserRole(loggedInUserRole);
                     if (loggedInUserRole === 'mssp'){
+                                                        setSelectedMssp(response.documents[0].mssp_id);
+
+                    }
 //                        console.log(response.documents[0].mssp_id); // Access documents here
 
-                        let msspQueryId = response.documents[0].mssp_id;
-                            if (msspQueryId){
-                                    databases.listDocuments(
+//                        let msspQueryId = response.documents[0].mssp_id;
+//                            if (msspQueryId){
+                                    /*databases.listDocuments(
                                         databaseID,
                                         msspCollectionID,
                                         [Query.equal('$id', msspQueryId)],
@@ -91,9 +114,12 @@ const HomePage = () => {
                                   })
                                   .catch(error => {
                                     console.error(error);
-                                  });
-                                  }
-                    }
+                                  });*/
+
+//                                  await getAllMssps();
+
+//                                  }
+//                    }
                   })
                   .catch(error => {
                     console.error(error);
@@ -110,6 +136,7 @@ const HomePage = () => {
 
     useEffect(() => {
         getUserProfiles();
+        getAllMssps();
     }, []);
 
 
@@ -171,9 +198,7 @@ const HomePage = () => {
         <AppBar  position="sticky" style={{ top: 0, zIndex: 1100, backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
           <Toolbar>
             <Typography variant="h6"  style={{ flexGrow: 1, fontWeight: 'bold', fontSize: '0.95rem' }} >FS Client Portal</Typography>
-            <Tooltip title={user.name} arrow>
-                 <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} signOut={signOut} />
-          </Tooltip>
+
           </Toolbar>
         </AppBar>
 
@@ -235,6 +260,9 @@ const HomePage = () => {
 export default HomePage;
 
 
+// <Tooltip title={user.name} arrow>
+//                 <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} signOut={signOut} />
+//          </Tooltip>
 
 //           <MsspCountComponent userRole={userRole} msspId={selectedMssp} />
 
