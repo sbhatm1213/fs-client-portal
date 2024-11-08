@@ -51,7 +51,6 @@ const App = () => {
   return (
     <AuthProvider>
         <ThemeProvider theme={theme}>
-
       <Router>
         <AppContent />
       </Router>

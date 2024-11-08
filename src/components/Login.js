@@ -21,10 +21,27 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize navigate object
 
 //  const { signInWithGoogle } = useAuth();
-  const { user, signInWithGoogle, signInWithAzure, signOut } = useAuth();
+  const { user, signInWithAzure, signOut } = useAuth();
+
+  const signInWithGoogle = async ({navigate}) => {
+    window.location.href = "http://127.0.0.1:5000/login";  // URL to Flask Google OAuth login route
+    fetch("http://127.0.0.1:5000/login",
+            {mode: 'no-cors', credentials: 'include' })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.redirect_url) {
+           const redirect_to = "http://localhost:3000" + data.redirect_url;
+            console.log(redirect_to);
+           navigate(redirect_to);
+        }
+      })
+      .catch(error => console.error("Authorization error:", error));
+  };
+
 
   const handleGoogleLogin = async () => {
-    await signInWithGoogle();
+    await signInWithGoogle(navigate);
   };
 
   const handleAzureLogin = async () => {
