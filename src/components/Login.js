@@ -26,13 +26,14 @@ const Login = () => {
 
   const signInWithGoogleFlask = async () => {
 //    window.location.href = "http://127.0.0.1:5000/login";  // URL to Flask Google OAuth login route
-    fetch("http://127.0.0.1:5000/login",
+    const host_origin - window.location.origin;
+    fetch(host_origin + "/api/login",
             {credentials: 'include' })
       .then(response => response.json())
       .then(data => {
         console.log(data);
         if (data.redirect_url) {
-           const redirect_to = "http://localhost:3000" + data.redirect_url;
+           const redirect_to = host_origin + data.redirect_url;
             console.log(redirect_to);
            navigate(redirect_to);
         }
