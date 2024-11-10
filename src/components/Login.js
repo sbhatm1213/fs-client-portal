@@ -22,12 +22,12 @@ const Login = () => {
 
 //  const { signInWithGoogle } = useAuth();
   const { user, signInWithGoogle, signInWithAzure, signOut } = useAuth();
-/*
 
-  const signInWithGoogle = async ({navigate}) => {
-    window.location.href = "http://127.0.0.1:5000/login";  // URL to Flask Google OAuth login route
+
+  const signInWithGoogleFlask = async () => {
+//    window.location.href = "http://127.0.0.1:5000/login";  // URL to Flask Google OAuth login route
     fetch("http://127.0.0.1:5000/login",
-            {mode: 'no-cors', credentials: 'include' })
+            {credentials: 'include' })
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -39,7 +39,6 @@ const Login = () => {
       })
       .catch(error => console.error("Authorization error:", error));
   };
-*/
 
 
   const handleGoogleLogin = async () => {
@@ -98,6 +97,25 @@ const Login = () => {
           }}
         >
           Login with Google
+        </Button>
+
+        <Button
+          variant="contained"
+          fullWidth
+          startIcon={<GoogleIcon />}
+          onClick={() => signInWithGoogleFlask()}
+          sx={{
+            textTransform: "none",
+            fontWeight: "medium",
+            backgroundColor: `${theme.palette.card.contrastText}`,
+            color: `${theme.palette.card.main}`,
+            marginBottom: 2,
+            '&:hover': {
+                boxShadow: 14
+            }
+          }}
+        >
+          Flask Google Login
         </Button>
 
         <Button
