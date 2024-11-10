@@ -25,8 +25,9 @@ const Login = () => {
 
 
   const signInWithGoogleFlask = async () => {
-//    window.location.href = "http://127.0.0.1:5000/login";  // URL to Flask Google OAuth login route
     const host_origin = window.location.origin;
+    window.location.href = host_origin + "/api/login";  // URL to Flask Google OAuth login route
+    /*const host_origin = window.location.origin;
     fetch(host_origin + "/api/login",
             {credentials: 'include' })
       .then(response => response.json())
@@ -38,7 +39,7 @@ const Login = () => {
            navigate(redirect_to);
         }
       })
-      .catch(error => console.error("Authorization error:", error));
+      .catch(error => console.error("Authorization error:", error));*/
   };
 
 
