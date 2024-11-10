@@ -64,7 +64,7 @@ const HomePage = () => {
     const getAllMssps = async () => {
         try {
             const host_origin = window.location.origin;
-            const response = await fetch(host_origin + '/mssps');
+            const response = await fetch(host_origin + '/api/mssps');
 
             const data = await response.json();
 
