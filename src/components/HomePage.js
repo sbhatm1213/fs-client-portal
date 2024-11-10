@@ -149,8 +149,13 @@ const HomePage = () => {
         return (
             <>
         <Box component="main" display="flex">
+        {
+          mspList && mspList.length &&
+          <>
           <MspCountComponent userRole={userRole} mspList={mspList}  />
           <ClientCountComponent userRole={userRole} mspList={mspList}  />
+          </>
+        }
         </Box>
       {
         userRole === 'admin' &&
@@ -177,7 +182,7 @@ const HomePage = () => {
             <Box component="main" display="flex">
               <Grid item spacing={6} my={4}>
             {
-                selectedMssp &&
+                selectedMssp && mspList && mspList.length &&
                 <PaginatedMspTable msspId={selectedMssp} mspRows={mspList} />
             }
               </Grid>
