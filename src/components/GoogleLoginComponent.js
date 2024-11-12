@@ -12,7 +12,7 @@ function GoogleLoginComponent() {
       const host_origin = window.location.origin;
 
         let google_login_url = host_origin + "/api/google-login";
-        if (host_origin.indexOf("localhost")){
+        if (host_origin.includes("localhost")){
                 google_login_url = "http://127.0.0.1:5000/api/google-login"
         }
 

@@ -67,7 +67,7 @@ const HomePage = () => {
             const host_origin = window.location.origin;
 
             let mssps_url = host_origin + "/api/mssps";
-            if (host_origin.indexOf("localhost")){
+            if (host_origin.includes("localhost")){
                     mssps_url = "http://127.0.0.1:5000/api/mssps"
             }
 
@@ -146,7 +146,7 @@ const HomePage = () => {
           const host_origin = window.location.origin;
 
             let user_roles_url = host_origin + "/api/userroles";
-            if (host_origin.indexOf("localhost")){
+            if (host_origin.includes("localhost")){
                     user_roles_url = "http://127.0.0.1:5000/api/userroles"
             }
 
