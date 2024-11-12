@@ -13,6 +13,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
 import { SiMicrosoftazure } from 'react-icons/si';
 import { useAuth } from '../services/AuthProvider';
+import NewGoogleLogin from './NewGoogleLogin';
 import theme from '../theme.js';
 
 
@@ -82,61 +83,7 @@ const Login = () => {
         </Typography>
         <Divider sx={{ marginBottom: 2, backgroundColor: `${theme.palette.card.contrastText}` }} />
 
-        <Button
-          variant="contained"
-          fullWidth
-          startIcon={<GoogleIcon />}
-          onClick={() => handleGoogleLogin()}
-          sx={{
-            textTransform: "none",
-            fontWeight: "medium",
-            backgroundColor: `${theme.palette.card.contrastText}`,
-            color: `${theme.palette.card.main}`,
-            marginBottom: 2,
-            '&:hover': {
-                boxShadow: 14
-            }
-          }}
-        >
-          Login with Google
-        </Button>
-
-        <Button
-          variant="contained"
-          fullWidth
-          startIcon={<GoogleIcon />}
-          onClick={() => signInWithGoogleFlask()}
-          sx={{
-            textTransform: "none",
-            fontWeight: "medium",
-            backgroundColor: `${theme.palette.card.contrastText}`,
-            color: `${theme.palette.card.main}`,
-            marginBottom: 2,
-            '&:hover': {
-                boxShadow: 14
-            }
-          }}
-        >
-          Flask Google Login
-        </Button>
-
-        <Button
-          variant="contained"
-          fullWidth
-          startIcon={<SiMicrosoftazure />}
-          onClick={() => handleAzureLogin()}
-          sx={{
-            textTransform: "none",
-            fontWeight: "medium",
-            backgroundColor: `${theme.palette.card.contrastText}`,
-            color: `${theme.palette.card.main}`,
-            '&:hover': {
-                boxShadow: 14
-            }
-          }}
-        >
-          Login with Azure
-        </Button>
+        <NewGoogleLogin />
       </Box>
     </Container>
   );
@@ -238,5 +185,62 @@ const Login = () => {
 };
 
 //export default Login;
+
+
+        <Button
+          variant="contained"
+          fullWidth
+          startIcon={<GoogleIcon />}
+          onClick={() => handleGoogleLogin()}
+          sx={{
+            textTransform: "none",
+            fontWeight: "medium",
+            backgroundColor: `${theme.palette.card.contrastText}`,
+            color: `${theme.palette.card.main}`,
+            marginBottom: 2,
+            '&:hover': {
+                boxShadow: 14
+            }
+          }}
+        >
+          Login with Google
+        </Button>
+
+        <Button
+          variant="contained"
+          fullWidth
+          startIcon={<GoogleIcon />}
+          onClick={() => signInWithGoogleFlask()}
+          sx={{
+            textTransform: "none",
+            fontWeight: "medium",
+            backgroundColor: `${theme.palette.card.contrastText}`,
+            color: `${theme.palette.card.main}`,
+            marginBottom: 2,
+            '&:hover': {
+                boxShadow: 14
+            }
+          }}
+        >
+          Flask Google Login
+        </Button>
+
+        <Button
+          variant="contained"
+          fullWidth
+          startIcon={<SiMicrosoftazure />}
+          onClick={() => handleAzureLogin()}
+          sx={{
+            textTransform: "none",
+            fontWeight: "medium",
+            backgroundColor: `${theme.palette.card.contrastText}`,
+            color: `${theme.palette.card.main}`,
+            '&:hover': {
+                boxShadow: 14
+            }
+          }}
+        >
+          Login with Azure
+        </Button>
 
 */

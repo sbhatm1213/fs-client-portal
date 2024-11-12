@@ -9,6 +9,7 @@ import { Query } from 'appwrite';
 import { databases } from '../services/appwriteClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 import theme from '../theme.js';
 import MsspCountComponent from './MsspCountComponent.js'
 import MspCountComponent from './MspCountComponent.js'
@@ -64,7 +65,13 @@ const HomePage = () => {
     const getAllMssps = async () => {
         try {
             const host_origin = window.location.origin;
-            const response = await fetch(host_origin + '/api/mssps');
+
+            let mssps_url = host_origin + "/api/mssps";
+            if (host_origin.indexOf("localhost")){
+                    mssps_url = "http://127.0.0.1:5000/api/mssps"
+            }
+
+            const response = await fetch(mssps_url);
 
             const data = await response.json();
 
@@ -83,7 +90,7 @@ const HomePage = () => {
     };
 
 
-    const getUserProfiles = async () => {
+    const getUserProfilesAppwrite = async () => {
            try {
                 databases.listDocuments(
                         databaseID,
@@ -95,8 +102,7 @@ const HomePage = () => {
                     console.log(response); // Access documents here
                     setUserRole(loggedInUserRole);
                     if (loggedInUserRole === 'mssp'){
-                                                        setSelectedMssp(response.documents[0].mssp_id);
-
+                        setSelectedMssp(response.documents[0].mssp_id);
                     }
 //                        console.log(response.documents[0].mssp_id); // Access documents here
 
@@ -133,6 +139,26 @@ const HomePage = () => {
                 setLoading(false);
           }
 
+    }
+
+    const getUserProfiles = async () => {
+        try {
+          const host_origin = window.location.origin;
+
+            let user_roles_url = host_origin + "/api/userroles";
+            if (host_origin.indexOf("localhost")){
+                    user_roles_url = "http://127.0.0.1:5000/api/userroles"
+            }
+
+          const res = await axios.post(user_roles_url, {
+            user_id: user.id,
+          });
+//          console.log("UserRole Fetched:", res.data);
+          setUserRole(res.data[0]);
+
+        } catch (error) {
+          console.error("Error during user creation:", error);
+        }
     }
 
     useEffect(() => {

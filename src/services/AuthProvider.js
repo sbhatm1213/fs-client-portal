@@ -1,3 +1,4 @@
+/*
 // src/services/AuthProvider.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -62,3 +63,43 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   return useContext(AuthContext);
 };
+*/
+
+import React, { createContext, useContext, useState, useEffect } from "react";
+
+// Create Context for Authentication
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
+  // Load user data from sessionStorage when app is initialized
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const login = (userData) => {
+    setUser(userData);
+    sessionStorage.setItem("user", JSON.stringify(userData));
+  };
+
+  const logout = () => {
+    setUser(null);
+    sessionStorage.removeItem("user");
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
