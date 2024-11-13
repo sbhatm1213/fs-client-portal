@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { PublicClientApplication } from "@azure/msal-browser";
 import axios from "axios";
 
@@ -15,7 +15,30 @@ const msalConfig = {
 const msalInstance = new PublicClientApplication(msalConfig);
 
 const AzureLoginComponent = () => {
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Wait for MSAL instance to initialize before using it
+  useEffect(() => {
+    const initializeMsal = async () => {
+      try {
+        // Initialize the MSAL instance (await if needed)
+        console.log("Initializing MSAL...");
+        await msalInstance.handleRedirectPromise(); // Initialize MSAL and handle any redirect response
+        setIsInitialized(true);
+      } catch (error) {
+        console.error("Error initializing MSAL:", error);
+      }
+    };
+
+    initializeMsal();
+  }, []);
+
   const handleLogin = async () => {
+    if (!isInitialized) {
+      console.log("MSAL is not initialized yet.");
+      return; // Exit if MSAL isn't initialized
+    }
+
     try {
       console.log("Initiating loginRedirect...");
       // Start login process
@@ -60,7 +83,11 @@ const AzureLoginComponent = () => {
     }
   }, []); // Only run once on component mount
 
-  return <button onClick={handleLogin}>Login with Azure</button>;
+  return (
+    <button onClick={handleLogin} disabled={!isInitialized}>
+      {isInitialized ? "Login with Azure" : "Initializing..."}
+    </button>
+  );
 };
 
 export default AzureLoginComponent;
