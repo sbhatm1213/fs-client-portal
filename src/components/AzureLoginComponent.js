@@ -1,89 +1,66 @@
 import React, { useEffect } from "react";
 import { PublicClientApplication } from "@azure/msal-browser";
-import { MsalProvider, useMsal } from "@azure/msal-react";
 import axios from "axios";
 
-// MSAL configuration
+// MSAL Configuration
 const msalConfig = {
   auth: {
-    clientId: `${process.env.REACT_APP_AZURE_CLIENT_ID}`,
+    clientId: process.env.REACT_APP_AZURE_CLIENT_ID,
     authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AZURE_TENANT_ID}`,
     redirectUri: `${window.location.origin}/dashboard`, // Ensure this is correctly set in Azure portal too
   },
 };
 
-// MSAL instance
+// Create MSAL instance
 const msalInstance = new PublicClientApplication(msalConfig);
 
-const AzureLoginButton = () => {
-  const { instance } = useMsal();
-
+const AzureLoginComponent = () => {
   const handleLogin = async () => {
     try {
       console.log("Initiating loginRedirect...");
-      // Initiate login with redirect flow
-      await instance.loginRedirect({
-        scopes: ["openid", "profile", "email", "User.Read"], // The required scopes for your application
+      // Start login process
+      await msalInstance.loginRedirect({
+        scopes: ["User.Read"], // Your required scopes
       });
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("Login failed:", error);
     }
   };
 
-  return <button onClick={handleLogin}>Login with Azure</button>;
-};
-
-const AzureLoginComponent = () => {
-  const { instance } = useMsal();
-
+  // Handling redirect response after page reload
   useEffect(() => {
     const handleRedirectResponse = async () => {
       try {
-        console.log("Checking for redirect response...");
-        const response = await instance.handleRedirectPromise(); // This will process the response after redirect
+        const response = await msalInstance.handleRedirectPromise();
         if (response) {
           console.log("Login successful:", response);
 
           const azureToken = response.idToken;
 
-          // Send the Azure token to the Flask backend to create or fetch the user
-          const host_origin = window.location.origin;
-          let azure_login_url = host_origin + "/api/azure-login";
-          if (host_origin.includes("localhost")) {
-            azure_login_url = "http://127.0.0.1:5000/api/azure-login";
-          }
-
-          console.log("Sending Azure token to backend...");
-
-          const res = await axios.post(azure_login_url, {
-            token: azureToken,
-          });
+          // Send the Azure token to your backend
+          const azureLoginUrl = window.location.origin + "/api/azure-login";
+          const res = await axios.post(azureLoginUrl, { token: azureToken });
           console.log("User Created or Fetched:", res.data);
 
-          // Store user data in sessionStorage
+          // Store user data
           sessionStorage.setItem("user", JSON.stringify(res.data.user));
 
-          // Redirect to the dashboard after successful login
+          // Redirect to the dashboard
           window.location.href = "/dashboard";
         } else {
-          console.log("No login response found.");
+          console.log("No response found.");
         }
       } catch (error) {
-        console.error("Error handling redirect response:", error);
+        console.error("Error during redirect handling:", error);
       }
     };
 
-    // Only handle the redirect response if the page was loaded with the redirect
     if (window.location.hash) {
       handleRedirectResponse();
     }
-  }, [instance]);
+  }, []); // Only run once on component mount
 
-  return (
-    <MsalProvider instance={msalInstance}>
-      <AzureLoginButton />
-    </MsalProvider>
-  );
+  return <button onClick={handleLogin}>Login with Azure</button>;
 };
 
 export default AzureLoginComponent;
