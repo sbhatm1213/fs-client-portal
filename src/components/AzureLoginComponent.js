@@ -20,9 +20,10 @@ const AzureLoginButton = () => {
 
   const handleLogin = async () => {
     try {
+      console.log("Initiating loginRedirect...");
       // Initiate login with redirect flow
-      instance.loginRedirect({
-        scopes: ["User.Read"], // The required scopes for your application
+      await instance.loginRedirect({
+        scopes: ["openid", "profile", "email", "User.Read"], // The required scopes for your application
       });
     } catch (error) {
       console.error("Error during login:", error);
@@ -36,9 +37,9 @@ const AzureLoginComponent = () => {
   const { instance } = useMsal();
 
   useEffect(() => {
-    // Handle the redirect after login
     const handleRedirectResponse = async () => {
       try {
+        console.log("Checking for redirect response...");
         const response = await instance.handleRedirectPromise(); // This will process the response after redirect
         if (response) {
           console.log("Login successful:", response);
@@ -52,6 +53,8 @@ const AzureLoginComponent = () => {
             azure_login_url = "http://127.0.0.1:5000/api/azure-login";
           }
 
+          console.log("Sending Azure token to backend...");
+
           const res = await axios.post(azure_login_url, {
             token: azureToken,
           });
@@ -62,6 +65,8 @@ const AzureLoginComponent = () => {
 
           // Redirect to the dashboard after successful login
           window.location.href = "/dashboard";
+        } else {
+          console.log("No login response found.");
         }
       } catch (error) {
         console.error("Error handling redirect response:", error);
