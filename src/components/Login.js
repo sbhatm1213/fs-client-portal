@@ -13,7 +13,8 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
 import { SiMicrosoftazure } from 'react-icons/si';
 import { useAuth } from '../services/AuthProvider';
-import NewGoogleLogin from './NewGoogleLogin';
+import GoogleLoginComponent from './GoogleLoginComponent';
+import AzureLoginComponent from './AzureLoginComponent';
 import theme from '../theme.js';
 
 
@@ -83,7 +84,9 @@ const Login = () => {
         </Typography>
         <Divider sx={{ marginBottom: 2, backgroundColor: `${theme.palette.card.contrastText}` }} />
 
-        <NewGoogleLogin />
+        <GoogleLoginComponent />
+
+        <AzureLoginComponent />
       </Box>
     </Container>
   );
