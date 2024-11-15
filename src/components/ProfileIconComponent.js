@@ -14,12 +14,12 @@ import { useNavigate } from 'react-router-dom';
 import theme from '../theme.js';
 
 
-const ProfileIconComponent = ({ userInfo, msspInfo, signOut }) => {
+const ProfileIconComponent = ({ userInfo, msspInfo, logout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
     const handleLogout = async () => {
-        await signOut();
+        await logout();
         navigate('/login');
   };
 

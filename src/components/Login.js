@@ -23,7 +23,7 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize navigate object
 
 //  const { signInWithGoogle } = useAuth();
-  const { user, signInWithGoogle, signInWithAzure, signOut } = useAuth();
+  const { user, signInWithGoogle, signInWithAzure, logout } = useAuth();
 
 
   const signInWithGoogleFlask = async () => {
@@ -84,11 +84,14 @@ const Login = () => {
         </Typography>
         <Divider sx={{ marginBottom: 2, backgroundColor: `${theme.palette.card.contrastText}` }} />
 
-        <GoogleLoginComponent />
+        <Box sx={{ width: '100%' }}>
+            <GoogleLoginComponent />
+        </Box>
 
         <Divider sx={{ marginBottom: 2, backgroundColor: 'transparent' }} />
 
         <AzureLoginComponent />
+
       </Box>
     </Container>
   );

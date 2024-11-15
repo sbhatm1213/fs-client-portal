@@ -23,7 +23,7 @@ import HeimdalProductCard  from './HeimdalProductCard.js'
 
 const HomePage = () => {
 
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
 //  console.log(user);
 //  const navigate = useNavigate();
 //
@@ -230,7 +230,9 @@ const HomePage = () => {
         <AppBar  position="sticky" style={{ top: 0, zIndex: 1100, backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
           <Toolbar>
             <Typography variant="h6"  style={{ flexGrow: 1, fontWeight: 'bold', fontSize: '0.95rem' }} >FS Client Portal</Typography>
-
+             <Tooltip title={user.name} arrow>
+                             <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} logout={logout} />
+                      </Tooltip>
           </Toolbar>
         </AppBar>
 
@@ -292,9 +294,6 @@ const HomePage = () => {
 export default HomePage;
 
 
-// <Tooltip title={user.name} arrow>
-//                 <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} signOut={signOut} />
-//          </Tooltip>
 
 //           <MsspCountComponent userRole={userRole} msspId={selectedMssp} />
 
