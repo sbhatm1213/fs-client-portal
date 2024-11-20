@@ -16,6 +16,7 @@ import MspCountComponent from './MspCountComponent.js'
 import ClientCountComponent from './ClientCountComponent.js'
 import MsspComponent  from './MsspComponent.js'
 import PaginatedMspTable  from './PaginatedMspTable.js'
+import PaginatedClientTable  from './PaginatedClientTable.js'
 import MspComponent  from './MspComponent.js'
 import ProfileIconComponent  from './ProfileIconComponent.js'
 import HeimdalProductCard  from './HeimdalProductCard.js'
@@ -62,108 +63,117 @@ const HomePage = () => {
         setMspList(mspIdList);
       };
 
-    const getAllMssps = async () => {
-        try {
-            const host_origin = window.location.origin;
 
-            let mssps_url = host_origin + "/api/mssps";
-            if (host_origin.includes("localhost")){
-                    mssps_url = "http://127.0.0.1:5000/api/mssps"
-            }
-
-            const response = await fetch(mssps_url);
-
-            const data = await response.json();
-
-//            console.log(data[0].mssp.id);
-//            console.log(data[0].mssp.name);
-//                        console.log(data[0].msps.length);
-
-            console.log(data[0].msps[0]);
-            // Log or set state with data
-            setSelectedMssp(data[0].mssp.id);
-            setSelectedMsspName(data[0].mssp.name);
-            setMspList(data[0].msps);
-        } catch (error) {
-            setError(error.message);
-        }
-    };
-
-
-    const getUserProfilesAppwrite = async () => {
-           try {
-                databases.listDocuments(
-                        databaseID,
-                        userProfCollectionID,
-                        [Query.equal('email', user.email)], // Using Query object for filtering
-                        1
-                        ).then(response => {
-                        let loggedInUserRole = response.documents[0].role;
-                    console.log(response); // Access documents here
-                    setUserRole(loggedInUserRole);
-                    if (loggedInUserRole === 'mssp'){
-                        setSelectedMssp(response.documents[0].mssp_id);
-                    }
-//                        console.log(response.documents[0].mssp_id); // Access documents here
-
-//                        let msspQueryId = response.documents[0].mssp_id;
-//                            if (msspQueryId){
-                                    /*databases.listDocuments(
-                                        databaseID,
-                                        msspCollectionID,
-                                        [Query.equal('$id', msspQueryId)],
-                                        1
-                                        ).then(msspresponse => {
-//                                    console.log(msspresponse.documents); // Access documents here
-                                    setSelectedMssp(msspQueryId);
-                                    setSelectedMsspName(msspresponse.documents[0].name);
-                                    setMspList(msspresponse.documents[0].msp);
-                                  })
-                                  .catch(error => {
-                                    console.error(error);
-                                  });*/
-
-//                                  await getAllMssps();
-
-//                                  }
-//                    }
-                  })
-                  .catch(error => {
-                    console.error(error);
-                  });
-
-          } catch (error) {
-                console.log(error);
-                setError(error.message);
-          } finally {
-                setLoading(false);
-          }
-
-    }
-
-    const getUserProfiles = async () => {
-        try {
-          const host_origin = window.location.origin;
-
-            let user_roles_url = host_origin + "/api/userroles";
-            if (host_origin.includes("localhost")){
-                    user_roles_url = "http://127.0.0.1:5000/api/userroles"
-            }
-
-          const res = await axios.post(user_roles_url, {
-            user_id: user.id,
-          });
-//          console.log("UserRole Fetched:", res.data);
-          setUserRole(res.data[0]);
-
-        } catch (error) {
-          console.error("Error during user creation:", error);
-        }
-    }
+/*
 
     useEffect(() => {
+
+        const getUserProfiles = async () => {
+            try {
+              const host_origin = window.location.origin;
+
+                let user_roles_url = host_origin + "/api/userroles";
+                if (host_origin.includes("localhost")){
+                    user_roles_url = "http://127.0.0.1:5000/api/userroles"
+                }
+
+              const res = await axios.post(user_roles_url, {
+                user_id: user.id,
+              });
+    //          console.log("UserRole Fetched:", res.data);
+              setUserRole(res.data[0]);
+
+            } catch (error) {
+              console.error("Error during user creation:", error);
+            }
+        }
+
         getUserProfiles();
+
+        const getAllMssps = async () => {
+            try {
+                const host_origin = window.location.origin;
+
+                let mssps_url = host_origin + "/api/mssps";
+                if (host_origin.includes("localhost")){
+                        mssps_url = "http://127.0.0.1:5000/api/mssps"
+                }
+
+                const response = await axios.get(mssps_url);
+
+                const data = response.data;
+
+    //            console.log(data[0].mssp.id);
+    //            console.log(data[0].mssp.name);
+    //                        console.log(data[0].msps.length);
+
+                console.log(data[0].msps[0]);
+                // Log or set state with data
+                setSelectedMssp(data[0].mssp.id);
+                setSelectedMsspName(data[0].mssp.name);
+                setMspList(data[0].msps);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
         getAllMssps();
+
+    }, [user.id]);
+*/
+
+    useEffect(() => {
+
+        const getUserProfiles = async () => {
+            try {
+              const host_origin = window.location.origin;
+
+                let user_roles_url = host_origin + "/api/userroles";
+                if (host_origin.includes("localhost")){
+                    user_roles_url = "http://127.0.0.1:5000/api/userroles"
+                }
+
+              const res = await axios.get(user_roles_url);
+              console.log("UserRole Fetched:", res.data);
+              setUserRole(res.data['role']['name']);
+
+            } catch (error) {
+              console.error("Error during user creation:", error);
+            }
+        }
+
+        getUserProfiles();
+
+        const getDashboardData = async () => {
+            try {
+                const host_origin = window.location.origin;
+
+                let dashboard_data_url = host_origin + "/api/dashboardData";
+                if (host_origin.includes("localhost")){
+                        dashboard_data_url = "http://127.0.0.1:5000/api/dashboardData"
+                }
+
+                const response = await axios.get(dashboard_data_url);
+
+                const data = response.data;
+                console.log(data);
+
+    //            console.log(data[0].mssp.id);
+    //            console.log(data[0].mssp.name);
+    //                        console.log(data[0].msps.length);
+
+                console.log(data[0].msps[0]);
+                // Log or set state with data
+                setSelectedMssp(data[0].mssp.id);
+                setSelectedMsspName(data[0].mssp.name);
+                setMspList(data[0].msps);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        getDashboardData();
+
     }, []);
 
 
@@ -174,15 +184,7 @@ const HomePage = () => {
       case 'heimdal_nav':
         return (
             <>
-        <Box component="main" display="flex">
-        {
-          mspList && mspList.length &&
-          <>
-          <MspCountComponent userRole={userRole} mspList={mspList}  />
-          <ClientCountComponent userRole={userRole} mspList={mspList}  />
-          </>
-        }
-        </Box>
+
       {
         userRole === 'admin' &&
 
@@ -204,12 +206,42 @@ const HomePage = () => {
 
       {
         userRole === 'mssp' &&
+        <>
+        <Box component="main" display="flex">
+        {
+          mspList && mspList.length &&
+          <>
+          <Typography>{mspList.length}</Typography>
+          <MspCountComponent userRole={userRole} mspList={mspList}  />
+          <ClientCountComponent userRole={userRole} mspList={mspList}  />
+          </>
+        }
+        </Box>
 
             <Box component="main" display="flex">
               <Grid item spacing={6} my={4}>
             {
                 selectedMssp && mspList && mspList.length &&
                 <PaginatedMspTable msspId={selectedMssp} mspRows={mspList} />
+            }
+              </Grid>
+            </Box>
+        </>
+      }
+
+      {
+        userRole === 'msp' &&
+
+            <Box component="main" display="flex">
+              <Grid item spacing={6} my={4}>
+            {
+                selectedMssp && mspList && mspList.length &&
+                <PaginatedClientTable mspId={mspList[0].id}
+                                      clientRows={mspList[0].clients}
+                                      closeTable={false}
+                                      mspName={mspList[0].name}
+                                      />
+
             }
               </Grid>
             </Box>

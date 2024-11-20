@@ -66,6 +66,8 @@ export const useAuth = () => {
 */
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+
 
 // Create Context for Authentication
 export const AuthContext = createContext();
@@ -75,13 +77,31 @@ export const AuthProvider = ({ children }) => {
 
   // Load user data from sessionStorage when app is initialized
   useEffect(() => {
+
+          // Set Authorization header for Axios
+          const setAuthHeader = () => {
+            const token = getAuthToken();
+            if (token) {
+              axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            } else {
+              delete axios.defaults.headers.common['Authorization']; // Remove header if no token
+            }
+          };
+
     const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+      setAuthHeader(); // Set the JWT token in Axios default headers if available
     }
   }, []);
 
+  // Function to get the token from sessionStorage
+  const getAuthToken = () => {
+    return sessionStorage.getItem('jwt_token'); // Retrieve token from sessionStorage
+  };
+
   const login = (userData) => {
+//    console.log(userData);
     setUser(userData);
     sessionStorage.setItem("user", JSON.stringify(userData));
   };
@@ -89,6 +109,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     sessionStorage.removeItem("user");
+    sessionStorage.removeItem("jwt_token");
+    delete axios.defaults.headers.common['Authorization']; // Remove Authorization header
   };
 
   return (

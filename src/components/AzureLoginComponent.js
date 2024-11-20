@@ -46,6 +46,8 @@ const AzureLoginButton = () => {
 
       // Store user data in sessionStorage
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
+      sessionStorage.setItem('jwt_token', res.data.jwt_token);
+
 
       // Redirect to the dashboard after successful login
       window.location.href = "/dashboard";
