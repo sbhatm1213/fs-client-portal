@@ -20,11 +20,15 @@ import PaginatedClientTable  from './PaginatedClientTable.js'
 import MspComponent  from './MspComponent.js'
 import ProfileIconComponent  from './ProfileIconComponent.js'
 import HeimdalProductCard  from './HeimdalProductCard.js'
+import SentinelOneProductCard  from './SentinelOneProductCard.js'
+import UserManagementComponent  from './UserManagementComponent.js'
 
 
 const HomePage = () => {
 
+
   const { user, logout } = useAuth();
+
 //  console.log(user);
 //  const navigate = useNavigate();
 //
@@ -37,6 +41,7 @@ const HomePage = () => {
     const [showAllMssp, setShowAllMssp] = useState(true);
     const [selectedMssp, setSelectedMssp] = useState(null);
     const [selectedMsspName, setSelectedMsspName] = useState(null);
+    const [msspUserList, setMsspUserList] = useState(null);
     const [mspList, setMspList] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -113,6 +118,7 @@ const HomePage = () => {
                 setSelectedMsspName(data[0].mssp.name);
                 setMspList(data[0].msps);
             } catch (error) {
+
                 setError(error.message);
             }
         };
@@ -177,17 +183,23 @@ const HomePage = () => {
     }, []);
 
 
+    const handleUserMgmt = () => {
+        setSelectedNavKey('user_mgmt_nav');
+    };
+
   const renderContent = () => {
     switch (selectedNavKey) {
       case 'product_nav':
-        return <HeimdalProductCard />;
+        return (<Box display='flex'>
+                <HeimdalProductCard />
+                <SentinelOneProductCard />
+                </Box>);
       case 'heimdal_nav':
         return (
             <>
 
       {
         userRole === 'admin' &&
-
         <Box component="main" display="flex">
           <Grid item spacing={6} my={4}>
           {
@@ -203,7 +215,6 @@ const HomePage = () => {
           </Grid>
         </Box>
         }
-
       {
         userRole === 'mssp' &&
         <>
@@ -247,6 +258,13 @@ const HomePage = () => {
       }
             </>
         );
+      case 'user_mgmt_nav':
+        return <UserManagementComponent userData={user}
+                                        userProfile={userRole}
+                                        msspId={selectedMssp}
+                                        msspName={selectedMsspName}
+                                        msspUserInfo={msspUserList}
+                                        mspInfo={null} />;
       default:
         return <HeimdalProductCard />;
     }
@@ -261,14 +279,13 @@ const HomePage = () => {
         <AppBar  position="sticky" style={{ top: 0, zIndex: 1100, backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
           <Toolbar>
             <Typography variant="h6"  style={{ flexGrow: 1, fontWeight: 'bold', fontSize: '0.95rem' }} >FS Client Portal</Typography>
-             <Tooltip title={user.name} arrow>
-                             <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} logout={logout} />
-                      </Tooltip>
+
+                 <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} signOut={signOut} handleUserMgmt={handleUserMgmt} />
+
           </Toolbar>
         </AppBar>
 
       {/* Everything below Top Appbar */}
-
     <Grid container >
       {/* Left Sidebar */}
         <Grid item xs={2} >

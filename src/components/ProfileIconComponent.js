@@ -10,11 +10,12 @@ import WorkIcon from '@mui/icons-material/Work';
 import PeopleIcon from '@mui/icons-material/People';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { useNavigate } from 'react-router-dom';
 import theme from '../theme.js';
 
 
-const ProfileIconComponent = ({ userInfo, msspInfo, logout }) => {
+const ProfileIconComponent = ({ userInfo, msspInfo, signOut, handleUserMgmt }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
@@ -30,6 +31,11 @@ const ProfileIconComponent = ({ userInfo, msspInfo, logout }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+    const openUserMgmt = async () => {
+        handleMenuClose();
+        handleUserMgmt();
   };
 
   return (
@@ -49,41 +55,45 @@ const ProfileIconComponent = ({ userInfo, msspInfo, logout }) => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-          {/* Display user info */}
-
-                  <MenuItem  sx={{ display: 'flex', justifyContent: 'left', alignItems: 'left',
-                                    '&:hover': {
-                                        backgroundColor: 'transparent',
-                                        cursor: 'default',
-                                      }
-                                  }}>
+        {/* Display user info */}
+        <MenuItem  sx={{ display: 'flex',
+                         justifyContent: 'left',
+                         alignItems: 'left',
+                         '&:hover': {
+                                backgroundColor: 'transparent',
+                                cursor: 'default',
+                              }
+                         }}>
                       <Person fontSize="small" sx={{ mr: 1 }} />
-
-          <Typography variant="caption"  sx={{ textAlign: 'left' }}>{userInfo.name} ({userInfo.email})</Typography>
-
-                  </MenuItem>
-
-                  <MenuItem  sx={{ display: 'flex', justifyContent: 'left', alignItems: 'left',
+             <Typography variant="caption"  sx={{ textAlign: 'left' }}>{userInfo.name} ({userInfo.email})</Typography>
+        </MenuItem>
+        <MenuItem  sx={{ display: 'flex',
+                         justifyContent: 'left',
+                         alignItems: 'left',
+                         '&:hover': {
+                                backgroundColor: 'transparent',
+                                cursor: 'default',
+                              }
+                         }} >
+              <BusinessCenterIcon fontSize="small" sx={{ mr: 1 }} />
+              <Typography variant="caption"  sx={{ textAlign: 'left' }}>{msspInfo}</Typography>
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={openUserMgmt} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',
                                     '&:hover': {
-                                        backgroundColor: 'transparent',
-                                        cursor: 'default',
+                                        backgroundColor: 'transparent'
                                       }
                                   }}>
-                  <BusinessCenterIcon fontSize="small" sx={{ mr: 1 }} />
-          <Typography variant="caption"  sx={{ textAlign: 'left' }}>{msspInfo}</Typography>
-
-                  </MenuItem >
-      <Divider />
-
+               <ManageAccountsIcon fontSize="medium" sx={{ mr: 1 }} />
+               <Typography variant="button"  sx={{ textAlign: 'center' }}>User Management</Typography>
+        </MenuItem>
         <MenuItem onClick={handleLogout} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',
                                     '&:hover': {
                                         backgroundColor: 'transparent'
                                       }
                                   }}>
-                  <LogoutIcon fontSize="medium" sx={{ mr: 1 }} />
-
-                  <Typography variant="body2"  sx={{ textAlign: 'center' }}>Sign Out</Typography>
-
+               <LogoutIcon fontSize="medium" sx={{ mr: 1 }} />
+               <Typography variant="button"  sx={{ textAlign: 'center' }}>Sign Out</Typography>
         </MenuItem>
       </Menu>
     </div>

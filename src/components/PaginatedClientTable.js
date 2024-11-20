@@ -27,7 +27,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filterText, setFilterText] = useState('');
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('client_name');
 
 
     const handleTableClose = (event) => {
@@ -56,7 +56,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
 
   // Filter rows based on filterText
   const filteredRows = clientRows.filter((row) =>
-    row.name.toLowerCase().includes(filterText.toLowerCase())
+    row.client_name.toLowerCase().includes(filterText.toLowerCase())
   );
 
   // Sort filtered rows
@@ -95,7 +95,6 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
     };
 
 
-
   return (
     <Paper style={{ width: '90%', margin: 'auto' }}>
           <Box display="flex" alignItems="center" justifyContent="flex-end" width="100%" mb={0}>
@@ -127,9 +126,9 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
             <TableRow>
               <TableCell  sx={{ fontWeight: 'bold', width: '30%' }}>
                 <TableSortLabel
-                  active={orderBy === 'name'}
-                  direction={orderBy === 'name' ? order : 'asc'}
-                  onClick={() => handleRequestSort('name')}
+                  active={orderBy === 'client_name'}
+                  direction={orderBy === 'client_name' ? order : 'asc'}
+                  onClick={() => handleRequestSort('client_name')}
                 >
                   Client Name
                 </TableSortLabel>

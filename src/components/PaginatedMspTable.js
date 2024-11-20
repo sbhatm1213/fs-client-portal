@@ -25,7 +25,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filterText, setFilterText] = useState('');
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('msp_name');
 
   const [selectedMsp, setSelectedMsp] = useState(null);
   const [selectedMspName, setSelectedMspName] = useState(null);
@@ -53,7 +53,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
 
   // Filter rows based on filterText
   const filteredRows = mspRows.filter((row) =>
-    row.name.toLowerCase().includes(filterText.toLowerCase())
+    row.msp_name.toLowerCase().includes(filterText.toLowerCase())
   );
 
   // Sort filtered rows
@@ -128,7 +128,54 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
     };
 
 
+    const exportToCSV = () => {
+
+        const processedRows = [];
+
+        for (let i = 0; i < sortedRows.length; i++) {
+            const row = sortedRows[i];
+            processedRows.push({
+                'ID': row.$id,
+                'NAME': row.msp_name,
+                'CUSTOMER TYPE': row.customer_type,
+                'LICENSE TYPE': row.license_type,
+                'SPLA': row.spla_license,
+                'DEVICES': row.devices,
+                'PURCHASED LICENSES': row.purchased_licenses,
+                'CLIENT COUNT': row.client_ids.length,
+            });
+
+            // Loop through clients
+            for (let j = 0; j < row.client_ids.length; j++) {
+                const clientObj = row.client_ids[j];
+                processedRows.push({
+                    'ID': clientObj.$id,
+                    'NAME': clientObj.client_name,
+                    'CUSTOMER TYPE': clientObj.customer_type,
+                    'LICENSE TYPE': clientObj.license_type,
+                    'SPLA': clientObj.spla_license,
+                    'DEVICES': clientObj.active_licenses,
+                    'PURCHASED LICENSES': clientObj.total_licenses
+                });
+            }
+        }
+        console.log(processedRows);
+      const csv = Papa.unparse(processedRows);
+
+      const date = new Date();
+      const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      const fileName = `MSP_LIST_${dateString}.csv`;
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      link.click();
+    };
+
+
   return (
+
     <Paper >
       <TableContainer>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '16px' }}>
@@ -153,9 +200,9 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold', width: '22%' }}>
                 <TableSortLabel
-                  active={orderBy === 'name'}
-                  direction={orderBy === 'name' ? order : 'asc'}
-                  onClick={() => handleRequestSort('name')}
+                  active={orderBy === 'msp_name'}
+                  direction={orderBy === 'msp_name' ? order : 'asc'}
+                  onClick={() => handleRequestSort('msp_name')}
                 >
                   MSP Name
                 </TableSortLabel>
@@ -242,7 +289,6 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                                   backgroundColor: theme.palette.card.contrastText,
                                   color: theme.palette.card.main,
                                 },
-
                             }}
                         variant="outlined"
                         onClick={(event) => handleMspSelection(event, row)}
