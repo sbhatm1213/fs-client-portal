@@ -211,7 +211,6 @@ const HomePage = () => {
         {
           mspList && mspList.length &&
           <>
-          <Typography>{mspList.length}</Typography>
           <MspCountComponent userRole={userRole} mspList={mspList}  />
           <ClientCountComponent userRole={userRole} mspList={mspList}  />
           </>
