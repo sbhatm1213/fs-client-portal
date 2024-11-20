@@ -20,7 +20,7 @@ const ProfileIconComponent = ({ userInfo, msspInfo, signOut, handleUserMgmt }) =
   const navigate = useNavigate();
 
     const handleLogout = async () => {
-        await signOut();
+        await logout();
         navigate('/login');
   };
 

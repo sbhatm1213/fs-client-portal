@@ -70,10 +70,10 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
   const handleMspSelection = (event, clickedMsp) => {
     event.preventDefault();
 //        console.log(clickedMssp);
-    setSelectedMsp(clickedMsp.$id);
-    setSelectedMspName(clickedMsp.msp_name);
+    setSelectedMsp(clickedMsp.id);
+    setSelectedMspName(clickedMsp.name);
 //    onClickMsp(clickedMsp, clientList);
-    setClientList(clickedMsp.client_ids);
+    setClientList(clickedMsp.clients);
   };
 
   const closeClientTable = (event) => {
@@ -81,6 +81,51 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
     setSelectedMsp(null);
     setClientList([]);
   };
+
+    const exportToCSV = () => {
+
+        const processedRows = [];
+
+        for (let i = 0; i < sortedRows.length; i++) {
+            const row = sortedRows[i];
+            processedRows.push({
+                'ID': row.id,
+                'NAME': row.name,
+                'CUSTOMER TYPE': row.customer_type,
+                'LICENSE TYPE': row.license_type,
+                'SPLA': row.spla_license,
+                'DEVICES': row.devices,
+                'PURCHASED LICENSES': row.purchased_licenses,
+                'CLIENT COUNT': row.clients.length,
+            });
+
+            // Loop through clients
+            for (let j = 0; j < row.clients.length; j++) {
+                const clientObj = row.clients[j];
+                processedRows.push({
+                    'ID': clientObj.id,
+                    'NAME': clientObj.name,
+                    'CUSTOMER TYPE': clientObj.customer_type,
+                    'LICENSE TYPE': clientObj.license_type,
+                    'SPLA': clientObj.spla_license,
+                    'DEVICES': clientObj.active_licenses,
+                    'PURCHASED LICENSES': clientObj.purchased_licenses
+                });
+            }
+        }
+        console.log(processedRows);
+      const csv = Papa.unparse(processedRows);
+
+      const date = new Date();
+      const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      const fileName = `MSP_LIST_${dateString}.csv`;
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      link.click();
+    };
 
 
     const exportToCSV = () => {
@@ -130,9 +175,10 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
 
 
   return (
-    <Paper elevation={2} >
+
+    <Paper >
       <TableContainer>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '16px' }}>
           <TextField
             label="Filter by Name"
             variant="outlined"
@@ -208,9 +254,9 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
               </TableCell>
               <TableCell align='center' sx={{ fontWeight: 'bold', width: '16%' }}>
                 <TableSortLabel
-                  active={orderBy === 'client_ids'}
-                  direction={orderBy === 'client_ids' ? order : 'asc'}
-                  onClick={() => handleRequestSort('client_ids')}
+                  active={orderBy === 'clients'}
+                  direction={orderBy === 'clients' ? order : 'asc'}
+                  onClick={() => handleRequestSort('clients')}
                 >
                   Client Count
                 </TableSortLabel>
@@ -221,8 +267,8 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
             {sortedRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (<>
-                <TableRow key={row.$id} selected={row.$id === selectedMsp} >
-                  <TableCell>{row.msp_name}</TableCell>
+                <TableRow key={row.id} selected={row.id === selectedMsp} >
+                  <TableCell>{row.name}</TableCell>
                   <TableCell align='center'>{row.customer_type.toUpperCase()}</TableCell>
                   <TableCell>{row.license_type}</TableCell>
                   <TableCell align='center'>
@@ -233,13 +279,13 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   <TableCell align='right'>{row.devices}</TableCell>
                   <TableCell align='center'>
                     <Chip
-                        label={`${row.client_ids.length} Client(s)`}
+                        label={`${row.clients.length} Client(s)`}
                             sx={{
                               backgroundColor: theme.palette.card.main,
                               color: theme.palette.card.contrastText,
                               width: '100px',
                               textAlign: 'center',
-                              '&:hover': {
+                                '&:hover': {
                                   backgroundColor: theme.palette.card.contrastText,
                                   color: theme.palette.card.main,
                                 },
@@ -250,13 +296,14 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   </TableCell>
                 </TableRow>
                 {
-                            selectedMsp && selectedMsp == row.$id ? (
+                            selectedMsp && selectedMsp == row.id ? (
                           <TableRow>
                             <TableCell colSpan={7}>
                                 <PaginatedClientTable mspId={selectedMsp}
                                                       clientRows={clientList}
                                                       closeTable={closeClientTable}
-                                                      mspName={selectedMspName} />
+                                                      mspName={selectedMspName}
+                                                      />
                             </TableCell>
                           </TableRow>
                           ) : null

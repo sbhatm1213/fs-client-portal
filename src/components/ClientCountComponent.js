@@ -39,7 +39,7 @@ const ClientCountComponent = ({ userRole, mspList }) => {
                     } else if (userRole === 'mssp' && mspList != null) {
                         let count = 0;
                         mspList.forEach((msp) => {
-                            count += msp.client_ids.length;
+                            count += msp.clients.length;
                         });
                         setClientCount(count);
                     }

@@ -22,7 +22,6 @@ import Papa from 'papaparse';
 import theme from '../theme.js';
 
 
-
 const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -71,16 +70,15 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
     return 0;
   });
 
-
       const exportToCSV = () => {
         const processedRows = sortedRows.map((row) => ({
-            'ID': row.$id,
-            'NAME': row.client_name,
+            'ID': row.id,
+            'NAME': row.name,
             'CUSTOMER TYPE': row.customer_type,
             'LICENSE TYPE': row.license_type,
             'SPLA': row.spla_license,
             'DEVICES': row.active_licenses,
-            'PURCHASED LICENSES': row.total_licenses,
+            'PURCHASED LICENSES': row.purchased_licenses,
         }));
         console.log(processedRows);
       const csv = Papa.unparse(processedRows);
@@ -98,7 +96,7 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
 
 
   return (
-    <Paper style={{ width: '90%', margin: 'auto' }} elevation={5}>
+    <Paper style={{ width: '90%', margin: 'auto' }}>
           <Box display="flex" alignItems="center" justifyContent="flex-end" width="100%" mb={0}>
 
       <IconButton onClick={(event) => handleTableClose(event)} >
@@ -164,9 +162,9 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
               </TableCell>
               <TableCell align='right' sx={{ fontWeight: 'bold', width: '12%' }}>
                 <TableSortLabel
-                  active={orderBy === 'total_licenses'}
-                  direction={orderBy === 'total_licenses' ? order : 'asc'}
-                  onClick={() => handleRequestSort('total_licenses')}
+                  active={orderBy === 'purchased_licenses'}
+                  direction={orderBy === 'purchased_licenses' ? order : 'asc'}
+                  onClick={() => handleRequestSort('purchased_licenses')}
                 >
                   Total Licences
                 </TableSortLabel>
@@ -186,14 +184,14 @@ const PaginatedClientTable = ({ mspId, clientRows, closeTable, mspName }) => {
             {sortedRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
-                <TableRow key={row.$id}>
-                  <TableCell>{row.client_name}</TableCell>
+                <TableRow key={row.id}>
+                  <TableCell>{row.name}</TableCell>
                   <TableCell align='center'>{row.customer_type.toUpperCase()}</TableCell>
                   <TableCell>{row.license_type}</TableCell>
                   <TableCell align='center'>
                         <Checkbox size='small' checked={row.spla_license} disabled />
                   </TableCell>
-                  <TableCell align='right'>{row.total_licenses}</TableCell>
+                  <TableCell align='right'>{row.purchased_licenses}</TableCell>
                   <TableCell align='right'>{row.active_licenses}</TableCell>
                 </TableRow>
               ))}

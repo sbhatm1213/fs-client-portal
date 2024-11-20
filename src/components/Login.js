@@ -13,6 +13,8 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
 import { SiMicrosoftazure } from 'react-icons/si';
 import { useAuth } from '../services/AuthProvider';
+import GoogleLoginComponent from './GoogleLoginComponent';
+import AzureLoginComponent from './AzureLoginComponent';
 import theme from '../theme.js';
 
 
@@ -21,10 +23,30 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize navigate object
 
 //  const { signInWithGoogle } = useAuth();
-  const { user, signInWithGoogle, signInWithAzure, signOut } = useAuth();
+  const { user, signInWithGoogle, signInWithAzure, logout } = useAuth();
+
+
+  const signInWithGoogleFlask = async () => {
+    const host_origin = window.location.origin;
+    window.location.href = host_origin + "/api/login";  // URL to Flask Google OAuth login route
+    /*const host_origin = window.location.origin;
+    fetch(host_origin + "/api/login",
+            {credentials: 'include' })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.redirect_url) {
+           const redirect_to = host_origin + data.redirect_url;
+            console.log(redirect_to);
+           navigate(redirect_to);
+        }
+      })
+      .catch(error => console.error("Authorization error:", error));*/
+  };
+
 
   const handleGoogleLogin = async () => {
-    await signInWithGoogle();
+    await signInWithGoogle(navigate);
   };
 
   const handleAzureLogin = async () => {
@@ -62,42 +84,14 @@ const Login = () => {
         </Typography>
         <Divider sx={{ marginBottom: 2, backgroundColor: `${theme.palette.card.contrastText}` }} />
 
-        <Button
-          variant="contained"
-          fullWidth
-          startIcon={<GoogleIcon />}
-          onClick={() => handleGoogleLogin()}
-          sx={{
-            textTransform: "none",
-            fontWeight: "medium",
-            backgroundColor: `${theme.palette.card.contrastText}`,
-            color: `${theme.palette.card.main}`,
-            marginBottom: 2,
-            '&:hover': {
-                boxShadow: 14
-            }
-          }}
-        >
-          Login with Google
-        </Button>
+        <Box sx={{ width: '100%' }}>
+            <GoogleLoginComponent />
+        </Box>
 
-        <Button
-          variant="contained"
-          fullWidth
-          startIcon={<SiMicrosoftazure />}
-          onClick={() => handleAzureLogin()}
-          sx={{
-            textTransform: "none",
-            fontWeight: "medium",
-            backgroundColor: `${theme.palette.card.contrastText}`,
-            color: `${theme.palette.card.main}`,
-            '&:hover': {
-                boxShadow: 14
-            }
-          }}
-        >
-          Login with Azure
-        </Button>
+        <Divider sx={{ marginBottom: 2, backgroundColor: 'transparent' }} />
+
+        <AzureLoginComponent />
+
       </Box>
     </Container>
   );
@@ -199,5 +193,6 @@ const Login = () => {
 };
 
 //export default Login;
+
 
 */
