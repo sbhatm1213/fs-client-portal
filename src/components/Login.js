@@ -84,9 +84,7 @@ const Login = () => {
         </Typography>
         <Divider sx={{ marginBottom: 2, backgroundColor: `${theme.palette.card.contrastText}` }} />
 
-        <Box sx={{ width: '100%' }}>
-            <GoogleLoginComponent />
-        </Box>
+        <GoogleLoginComponent />
 
         <Divider sx={{ marginBottom: 2, backgroundColor: 'transparent' }} />
 

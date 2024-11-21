@@ -220,7 +220,6 @@ const HomePage = () => {
           </>
         }
         </Box>
-
             <Box component="main" display="flex">
               <Grid item spacing={6} my={4}>
             {
@@ -234,17 +233,11 @@ const HomePage = () => {
 
       {
         userRole === 'msp' &&
-
             <Box component="main" display="flex">
               <Grid item spacing={6} my={4}>
             {
                 selectedMssp && mspList && mspList.length &&
-                <PaginatedClientTable mspId={mspList[0].id}
-                                      clientRows={mspList[0].clients}
-                                      closeTable={false}
-                                      mspName={mspList[0].name}
-                                      />
-
+                <PaginatedMspTable msspId={selectedMssp} mspRows={mspList} />
             }
               </Grid>
             </Box>
@@ -289,7 +282,14 @@ const HomePage = () => {
         <AppBar  position="sticky" style={{ top: 0, zIndex: 1100, backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
           <Toolbar>
             <Typography variant="h6"  style={{ flexGrow: 1, fontWeight: 'bold', fontSize: '0.95rem' }} >FS Client Portal</Typography>
-                 <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} logout={logout} handleUserMgmt={handleUserMgmt} />
+            {
+                userRole === 'mssp' && selectedMssp &&
+                 <ProfileIconComponent userInfo={user} msspOrMspInfo={selectedMsspName} logout={logout} handleUserMgmt={handleUserMgmt} />
+            }
+            {
+             userRole === 'msp' && selectedMssp && mspList && mspList.length &&
+                 <ProfileIconComponent userInfo={user} msspOrMspInfo={mspList[0].name} logout={logout} handleUserMgmt={handleUserMgmt} />
+            }
           </Toolbar>
         </AppBar>
 
@@ -385,16 +385,12 @@ export default HomePage;
       </Breadcrumbs>
       </Grid>
 
+<PaginatedClientTable mspId={mspList[0].id}
+                                      clientRows={mspList[0].clients}
+                                      closeTable={false}
+                                      mspName={mspList[0].name}
+                                      />
 
-            <IconButton color="inherit" onClick={() => console.log('Profile clicked')}>
-                <AccountCircle />
-            </IconButton>
 
-        //footer
-      <Grid item xs={12} >
-        <Typography variant="body2" align="center">
-          FS Client Portal © 2024
-        </Typography>
-      </Grid>
 
 */

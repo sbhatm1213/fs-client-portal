@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -30,6 +30,27 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
   const [selectedMsp, setSelectedMsp] = useState(null);
   const [selectedMspName, setSelectedMspName] = useState(null);
   const [clientList, setClientList] = useState([]);
+
+
+    useEffect(() => {
+
+        const loadSingleMsp = async () => {
+            try {
+              if (mspRows.length === 1){
+//                    setSelectedMsp(mspRows[0]);
+//                    setSelectedMspName(mspRows[0].name);
+//                    setClientList(mspRows[0].clients);
+                    document.getElementById('msp-chip-'+mspRows[0].id).click();
+              }
+
+            } catch (error) {
+              console.error("Error during single msp:", error);
+            }
+        }
+        loadSingleMsp();
+
+    }, [mspRows]);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -232,6 +253,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   <TableCell align='right'>{row.devices}</TableCell>
                   <TableCell align='center'>
                     <Chip
+                        id={`msp-chip-${row.id}`}
                         label={`${row.clients.length} Client(s)`}
                             sx={{
                               backgroundColor: theme.palette.card.main,
@@ -250,7 +272,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
                   </TableCell>
                 </TableRow>
                 {
-                            selectedMsp && selectedMsp == row.id ? (
+                            selectedMsp && selectedMsp === row.id ? (
                           <TableRow>
                             <TableCell colSpan={7}>
                                 <PaginatedClientTable mspId={selectedMsp}

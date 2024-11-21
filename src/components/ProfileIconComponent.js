@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import theme from '../theme.js';
 
 
-const ProfileIconComponent = ({ userInfo, msspInfo, logout, handleUserMgmt }) => {
+const ProfileIconComponent = ({ userInfo, msspOrMspInfo, logout, handleUserMgmt }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
@@ -76,7 +76,7 @@ const ProfileIconComponent = ({ userInfo, msspInfo, logout, handleUserMgmt }) =>
                               }
                          }} >
               <BusinessCenterIcon fontSize="small" sx={{ mr: 1 }} />
-              <Typography variant="caption"  sx={{ textAlign: 'left' }}>{msspInfo}</Typography>
+              <Typography variant="caption"  sx={{ textAlign: 'left' }}>{msspOrMspInfo}</Typography>
         </MenuItem>
         <Divider />
         <MenuItem onClick={openUserMgmt} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',

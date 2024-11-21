@@ -1,16 +1,21 @@
 // GoogleLoginComponent.js
-
-import React from "react";
+import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { Backdrop, CircularProgress } from "@mui/material";
 import axios from "axios";
+import theme from '../theme.js';
+
 
 const GoogleLoginComponent = () => {
-  const handleLoginSuccess = async (response) => {
-    console.log("Login Success:", response);
-    const googleToken = response.credential;
+  const [isLoading, setIsLoading] = useState(false);
 
-    // Send the Google token to the Flask backend to create or fetch the user
+  const handleLoginSuccess = async (response) => {
+    setIsLoading(true); // Start loading
     try {
+      console.log("Login Success:", response);
+      const googleToken = response.credential;
+
+      // Send the Google token to the backend to create or fetch the user
       const host_origin = window.location.origin;
       let google_login_url = host_origin + "/api/google-login";
       if (host_origin.includes("localhost")) {
@@ -24,13 +29,15 @@ const GoogleLoginComponent = () => {
 
       // Store user data in sessionStorage
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
-      sessionStorage.setItem('jwt_token', res.data.jwt_token);
-
+      sessionStorage.setItem("jwt_token", res.data.jwt_token);
+      setIsLoading(false); // Stop loading
 
       // Redirect to the dashboard after successful login
       window.location.href = "/dashboard";
     } catch (error) {
       console.error("Error during user creation:", error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
@@ -39,9 +46,37 @@ const GoogleLoginComponent = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-      <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginFailure} />
-    </GoogleOAuthProvider>
+    <>
+      {/* Full-page loading overlay */}
+      <Backdrop
+        open={isLoading}
+        sx={{
+          backgroundColor: '#ffffff', // White background for loading state
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CircularProgress
+          sx={{
+            color: theme.palette.card.main, // Blue spinner for consistency with Google
+          }}
+        />
+      </Backdrop>
+
+      {/* Google Login Button */}
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <GoogleLogin
+          onSuccess={handleLoginSuccess}
+          onError={handleLoginFailure}
+          theme="outline"
+          size="large"
+          text="signin_with"
+          disabled={isLoading}
+        />
+      </GoogleOAuthProvider>
+    </>
   );
 };
 
