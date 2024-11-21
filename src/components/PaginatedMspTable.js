@@ -152,6 +152,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
   return (
     <Paper >
       <TableContainer>
+      { mspRows && mspRows.length > 1  &&
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '16px' }}>
           <TextField
             label="Filter by Name"
@@ -168,6 +169,7 @@ const PaginatedMspTable = ({ msspId, mspRows }) => {
             Export to CSV
           </Button>
         </div>
+        }
 
         <Table stickyHeader size='small'>
           <TableHead sx={{ fontWeight: 'bold', fontSize: '0.8rem' }}>
