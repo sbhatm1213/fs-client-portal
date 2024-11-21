@@ -1,4 +1,4 @@
-// src/components/UserSettings.js
+// src/components/UserManagementComponent.js
 import React, {useEffect, useState} from 'react';
 import { Box, Card, CardContent, Typography, Avatar, Divider, Grid, Chip } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -6,16 +6,16 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { Query } from 'appwrite';
 import theme from '../theme.js';
 import moment from 'moment';
-import { databases } from '../services/appwriteClient';
+//import { databases } from '../services/appwriteClient';
 
 
 const UserManagementComponent = ({ userData, userProfile, msspId, msspName, msspUserInfo, mspInfo }) => {
 
     const [formattedRegisteredDate, setFormattedRegisteredDate] = useState([]);
     const [formattedLastActiveDate, setFormattedLastActiveDate] = useState([]);
-    const databaseID = process.env.REACT_APP_APPWRITE_DATABASE_ID;
-    const userProfCollectionID = process.env.REACT_APP_APPWRITE_USERPROF_COLLECTION_ID;
-    const msspCollectionID = process.env.REACT_APP_APPWRITE_MSSP_COLLECTION_ID;
+//    const databaseID = process.env.REACT_APP_APPWRITE_DATABASE_ID;
+//    const userProfCollectionID = process.env.REACT_APP_APPWRITE_USERPROF_COLLECTION_ID;
+//    const msspCollectionID = process.env.REACT_APP_APPWRITE_MSSP_COLLECTION_ID;
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -24,8 +24,8 @@ const UserManagementComponent = ({ userData, userProfile, msspId, msspName, mssp
         const registeredDate = userData.registration;
         setFormattedRegisteredDate(moment(registeredDate).format("MMMM DD, YYYY hh:mm A"));
 
-        const lastActiveDate = userData.accessedAt;
-        setFormattedLastActiveDate(moment(lastActiveDate).format("MMMM DD, YYYY hh:mm A"));
+//        const lastActiveDate = userData.accessedAt;
+//        setFormattedLastActiveDate(moment(lastActiveDate).format("MMMM DD, YYYY hh:mm A"));
     }, []);
 /*
 
@@ -103,31 +103,24 @@ const UserManagementComponent = ({ userData, userProfile, msspId, msspName, mssp
                       <strong>Joined:</strong>
                     </Typography>
                     </Grid>
-                    <Grid item xs={12}  mt={2}>
-                    <Typography variant="body2" color="textSecondary">
-                      <strong>Last Activity:</strong>
-                    </Typography>
-                    </Grid>
 
                             {
                               userProfile && userProfile === 'mssp' &&
                               <>
-                              <Grid item xs={12} mt={3}>
-                                <Typography variant="body2" color="textSecondary">
-                                  <strong>MSSP ID:</strong>
-                                </Typography>
-                                </Grid>
-                              <Grid item xs={12} mt={3}>
+
+                              <Grid item xs={12} mt={2}>
                                 <Typography variant="body2" color="textSecondary">
                                   <strong>MSSP Name:</strong>
                                 </Typography>
                                 </Grid>
+                                { msspUserInfo &&
                               <Grid item xs={12} mt={3}>
                                 <Typography variant="body2" color="textSecondary">
                                   <strong>MSSP Users:</strong>
                                 </Typography>
                                 </Grid>
-                              <Grid item xs={12} mt={3}>
+                                }
+                              <Grid item xs={12} mt={3}  style={{ display: 'none' }} >
                                 <Typography variant="body2" color="textSecondary">
                                   <strong>MSP Users:</strong>
                                 </Typography>
@@ -154,31 +147,25 @@ const UserManagementComponent = ({ userData, userProfile, msspId, msspName, mssp
                       {formattedRegisteredDate}
                     </Typography>
                     </Grid>
-                    <Grid item xs={12}  mt={2}>
-                    <Typography variant="body2" color="textSecondary">
-                      {formattedLastActiveDate}
-                    </Typography>
-                    </Grid>
+
 
                             {
                               userProfile && userProfile === 'mssp' &&
                               <>
-                              <Grid item xs={12}  mt={3}>
-                                <Typography variant="body2" color="textSecondary">
-                                  {msspId}
-                                </Typography>
-                                </Grid>
-                              <Grid item xs={12}  mt={3}>
+
+                              <Grid item xs={12}  mt={2}>
                                 <Typography variant="body2" color="textSecondary">
                                   {msspName}
                                 </Typography>
                                 </Grid>
+                                { msspUserInfo &&
                               <Grid item xs={12}  mt={3} display='flex' >
                                     {msspUserInfo.map((msspUser) => (
                                           <Chip key={msspUser.$id} label={msspUser.email} variant="outlined" />
                                       ))}
                                 </Grid>
-                              <Grid item xs={12}  mt={3}>
+                                }
+                              <Grid item xs={12}  mt={3} style={{ display: 'none' }} >
                                       <Chip label='INVITE MSP'
                                        sx={{
                                           backgroundColor: theme.palette.card.main,

@@ -20,7 +20,7 @@ import PaginatedClientTable  from './PaginatedClientTable.js'
 import MspComponent  from './MspComponent.js'
 import ProfileIconComponent  from './ProfileIconComponent.js'
 import HeimdalProductCard  from './HeimdalProductCard.js'
-
+import UserManagementComponent from './UserManagementComponent.js'
 
 const HomePage = () => {
 
@@ -177,6 +177,10 @@ const HomePage = () => {
     }, []);
 
 
+    const handleUserMgmt = () => {
+        setSelectedNavKey('user_mgmt_nav');
+    };
+
   const renderContent = () => {
     switch (selectedNavKey) {
       case 'product_nav':
@@ -247,6 +251,30 @@ const HomePage = () => {
       }
             </>
         );
+
+      case 'user_mgmt_nav':
+        return (
+        <>
+            {
+            userRole === 'mssp' && selectedMssp &&
+            <UserManagementComponent userData={user}
+                                        userProfile={userRole}
+                                        msspId={selectedMssp}
+                                        msspName={selectedMsspName}
+                                        msspUserInfo={null}
+                                        mspInfo={null} />
+             }
+             {
+             userRole === 'msp' && selectedMssp && mspList && mspList.length &&
+             <UserManagementComponent userData={user}
+                                        userProfile={userRole}
+                                        msspId={selectedMssp}
+                                        msspName={selectedMsspName}
+                                        msspUserInfo={null}
+                                        mspInfo={mspList[0].name} />
+             }
+         </>
+        );
       default:
         return <HeimdalProductCard />;
     }
@@ -261,9 +289,7 @@ const HomePage = () => {
         <AppBar  position="sticky" style={{ top: 0, zIndex: 1100, backgroundColor: theme.palette.card.main, color: theme.palette.card.contrastText }}>
           <Toolbar>
             <Typography variant="h6"  style={{ flexGrow: 1, fontWeight: 'bold', fontSize: '0.95rem' }} >FS Client Portal</Typography>
-             <Tooltip title={user.name} arrow>
-                             <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} logout={logout} />
-                      </Tooltip>
+                 <ProfileIconComponent userInfo={user} msspInfo={selectedMsspName} logout={logout} handleUserMgmt={handleUserMgmt} />
           </Toolbar>
         </AppBar>
 
