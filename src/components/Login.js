@@ -101,7 +101,6 @@ export default Login;
 // /src/components/Login.js
 import React from 'react';
 import { Container, Typography, Button, Box, Grid } from '@mui/material';
-//import { supabase } from '../services/supabaseClient';
 import { useAuth } from '../services/AuthProvider';
 //import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';

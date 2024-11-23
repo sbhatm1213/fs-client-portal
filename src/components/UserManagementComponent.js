@@ -3,19 +3,14 @@ import React, {useEffect, useState} from 'react';
 import { Box, Card, CardContent, Typography, Avatar, Divider, Grid, Chip } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import { Query } from 'appwrite';
 import theme from '../theme.js';
 import moment from 'moment';
-//import { databases } from '../services/appwriteClient';
 
 
 const UserManagementComponent = ({ userData, userProfile, msspId, msspName, msspUserInfo, mspInfo }) => {
 
     const [formattedRegisteredDate, setFormattedRegisteredDate] = useState([]);
     const [formattedLastActiveDate, setFormattedLastActiveDate] = useState([]);
-//    const databaseID = process.env.REACT_APP_APPWRITE_DATABASE_ID;
-//    const userProfCollectionID = process.env.REACT_APP_APPWRITE_USERPROF_COLLECTION_ID;
-//    const msspCollectionID = process.env.REACT_APP_APPWRITE_MSSP_COLLECTION_ID;
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -27,57 +22,7 @@ const UserManagementComponent = ({ userData, userProfile, msspId, msspName, mssp
 //        const lastActiveDate = userData.accessedAt;
 //        setFormattedLastActiveDate(moment(lastActiveDate).format("MMMM DD, YYYY hh:mm A"));
     }, []);
-/*
 
-    const getMsspUsers = async (msspId) => {
-        try {
-                databases.listDocuments(
-                        databaseID,
-                        userProfCollectionID,
-                        [Query.equal('mssp_id', msspId)], // Using Query object for filtering
-                        1
-                        ).then(response => {
-                        let usersOfMssp = response.documents[0];
-//                    console.log(loggedInUserRole); // Access documents here
-                    setMsspUserList(usersOfMssp);
-                  })
-                  .catch(error => {
-                    console.error(error);
-                  });
-          } catch (error) {
-                console.log(error);
-                setError(error.message);
-          }
-    }
-*/
-
-/*
-  useEffect(() => {
-    const fetchUsers = async (id) => {
-          try {
-                    databases.listDocuments(
-                            databaseID,
-                            userProfCollectionID,
-                            [Query.equal('mssp_id', id)]
-                      ).then(response => {
-
-                            let usersOfMssp = response;
-    //                    console.log(loggedInUserRole); // Access documents here
-                        setMsspUserList(usersOfMssp);
-              })
-              }catch (err) {
-                setError(err);
-              } finally {
-                setLoading(false);
-              }
-        }
-      if(msspId){
-            fetchUsers(msspId);
-        } else{
-            setLoading(false);
-        }
-  }, [msspId]);
-*/
 
   return (
     <Box display="flex" mt={4}>

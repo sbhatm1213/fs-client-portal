@@ -2,8 +2,6 @@
 import React, {useEffect, useState} from 'react';
 import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent, Box, TableBody, TableRow, TableCell, Table } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-//import { supabase } from '../services/supabaseClient';
-import { databases } from '../services/appwriteClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import theme from '../theme.js';
@@ -16,16 +14,13 @@ const ClientCountComponent = ({ userRole, mspList }) => {
     const [clients, setClients] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const databaseID = process.env.REACT_APP_APPWRITE_DATABASE_ID;
-    const clientCollectionID = process.env.REACT_APP_APPWRITE_CLIENT_COLLECTION_ID;
-
 
     useEffect(() => {
 
         const getCountClients = async (userRole, mspList) => {
                try {
                     if (userRole === 'admin'){
-                        databases.listDocuments(
+                        /*databases.listDocuments(
                                 databaseID,
                                 clientCollectionID,
                                 [],
@@ -35,7 +30,7 @@ const ClientCountComponent = ({ userRole, mspList }) => {
                           })
                           .catch(error => {
                             console.error(error);
-                          });
+                          });*/
                     } else if (userRole === 'mssp' && mspList != null) {
                         let count = 0;
                         mspList.forEach((msp) => {

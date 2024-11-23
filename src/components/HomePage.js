@@ -4,34 +4,21 @@ import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent
 import { Box, Drawer, Breadcrumbs, Link, List, ListItem, ListItemText, IconButton, ListItemButton, ListItemIcon } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { AccountCircle, Security, Dashboard, Token, DatasetLinked, ExpandMore } from '@mui/icons-material';
-import { Query } from 'appwrite';
-//import { supabase } from '../services/supabaseClient';
-import { databases } from '../services/appwriteClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import theme from '../theme.js';
-import MsspCountComponent from './MsspCountComponent.js'
 import MspCountComponent from './MspCountComponent.js'
 import ClientCountComponent from './ClientCountComponent.js'
-import MsspComponent  from './MsspComponent.js'
 import PaginatedMspTable  from './PaginatedMspTable.js'
 import PaginatedClientTable  from './PaginatedClientTable.js'
-import MspComponent  from './MspComponent.js'
 import ProfileIconComponent  from './ProfileIconComponent.js'
 import HeimdalProductCard  from './HeimdalProductCard.js'
 import UserManagementComponent from './UserManagementComponent.js'
 
 const HomePage = () => {
 
-  const { user, logout } = useAuth();
-//  console.log(user);
-//  const navigate = useNavigate();
-//
-//  const handleLogout = async () => {
-//    await signOut();
-//    navigate('/login');
-//  };
+    const { user, logout } = useAuth();
 
     const [userRole, setUserRole] = useState('');
     const [showAllMssp, setShowAllMssp] = useState(true);
@@ -40,9 +27,6 @@ const HomePage = () => {
     const [mspList, setMspList] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const databaseID = process.env.REACT_APP_APPWRITE_DATABASE_ID;
-    const userProfCollectionID = process.env.REACT_APP_APPWRITE_USERPROF_COLLECTION_ID;
-    const msspCollectionID = process.env.REACT_APP_APPWRITE_MSSP_COLLECTION_ID;
 
       const [selectedNavKey, setSelectedNavKey] = useState('heimdal_nav');
 
@@ -64,10 +48,7 @@ const HomePage = () => {
       };
 
 
-/*
-
     useEffect(() => {
-
         const getUserProfiles = async () => {
             try {
               const host_origin = window.location.origin;
@@ -76,67 +57,9 @@ const HomePage = () => {
                 if (host_origin.includes("localhost")){
                     user_roles_url = "http://127.0.0.1:5000/api/userroles"
                 }
-
-              const res = await axios.post(user_roles_url, {
-                user_id: user.id,
-              });
-    //          console.log("UserRole Fetched:", res.data);
-              setUserRole(res.data[0]);
-
-            } catch (error) {
-              console.error("Error during user creation:", error);
-            }
-        }
-
-        getUserProfiles();
-
-        const getAllMssps = async () => {
-            try {
-                const host_origin = window.location.origin;
-
-                let mssps_url = host_origin + "/api/mssps";
-                if (host_origin.includes("localhost")){
-                        mssps_url = "http://127.0.0.1:5000/api/mssps"
-                }
-
-                const response = await axios.get(mssps_url);
-
-                const data = response.data;
-
-    //            console.log(data[0].mssp.id);
-    //            console.log(data[0].mssp.name);
-    //                        console.log(data[0].msps.length);
-
-                console.log(data[0].msps[0]);
-                // Log or set state with data
-                setSelectedMssp(data[0].mssp.id);
-                setSelectedMsspName(data[0].mssp.name);
-                setMspList(data[0].msps);
-            } catch (error) {
-                setError(error.message);
-            }
-        };
-
-        getAllMssps();
-
-    }, [user.id]);
-*/
-
-    useEffect(() => {
-
-        const getUserProfiles = async () => {
-            try {
-              const host_origin = window.location.origin;
-
-                let user_roles_url = host_origin + "/api/userroles";
-                if (host_origin.includes("localhost")){
-                    user_roles_url = "http://127.0.0.1:5000/api/userroles"
-                }
-
               const res = await axios.get(user_roles_url);
               console.log("UserRole Fetched:", res.data);
               setUserRole(res.data['role']['name']);
-
             } catch (error) {
               console.error("Error during user creation:", error);
             }
@@ -152,18 +75,8 @@ const HomePage = () => {
                 if (host_origin.includes("localhost")){
                         dashboard_data_url = "http://127.0.0.1:5000/api/dashboardData"
                 }
-
                 const response = await axios.get(dashboard_data_url);
-
                 const data = response.data;
-                console.log(data);
-
-    //            console.log(data[0].mssp.id);
-    //            console.log(data[0].mssp.name);
-    //                        console.log(data[0].msps.length);
-
-                console.log(data[0].msps[0]);
-                // Log or set state with data
                 setSelectedMssp(data[0].mssp.id);
                 setSelectedMsspName(data[0].mssp.name);
                 setMspList(data[0].msps);
@@ -188,25 +101,6 @@ const HomePage = () => {
       case 'heimdal_nav':
         return (
             <>
-
-      {
-        userRole === 'admin' &&
-
-        <Box component="main" display="flex">
-          <Grid item spacing={6} my={4}>
-          {
-            showAllMssp &&
-            <MsspComponent onClickMssp={handleMsspClick} />
-          }
-          </Grid>
-          <Grid item spacing={6} my={4}>
-          {
-            selectedMssp &&
-            <MspComponent msspId={selectedMssp} queryMsp={mspList} />
-          }
-          </Grid>
-        </Box>
-        }
 
       {
         userRole === 'mssp' &&
@@ -352,45 +246,14 @@ export default HomePage;
 
 
 
-//           <MsspCountComponent userRole={userRole} msspId={selectedMssp} />
-
-//                <MspComponent msspId={selectedMssp} queryMsp={mspList} />
-
-
 /*
 
- <Grid container  spacing={4} my={10}>
-    <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" color="inherit" onClick={unsetMssp}>
-          MSSP
-        </Link>
-        {
-            mssp && mssp.mssp_id &&
-            <Link
-              underline="hover"
-              color="inherit"
-            >
-              {mssp.mssp_name}
-            </Link>
-        }
-        {
-            msp && msp.msp_id &&
-            <Link
-              underline="hover"
-              color="inherit"
-            >
-              {msp.msp_name}
-            </Link>
-        }
-      </Breadcrumbs>
-      </Grid>
 
 <PaginatedClientTable mspId={mspList[0].id}
                                       clientRows={mspList[0].clients}
                                       closeTable={false}
                                       mspName={mspList[0].name}
                                       />
-
 
 
 */

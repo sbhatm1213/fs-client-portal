@@ -2,9 +2,6 @@
 import React, {useEffect, useState} from 'react';
 import { Container, AppBar, Toolbar, Typography, Button, Grid, Card, CardContent, Box, TableBody, TableRow, TableCell, Table } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-//import { supabase } from '../services/supabaseClient';
-import { Query } from 'appwrite';
-import { databases } from '../services/appwriteClient';
 import { useAuth } from '../services/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import theme from '../theme.js';
@@ -19,8 +16,6 @@ const MspCountComponent = ({ userRole, mspList }) => {
     const [error, setError] = useState(null);
     const [totalLicencesCount, setTotalLicencesCount] = useState(null);
     const [totalDevicesCount, setTotalDevicesCount] = useState(null);
-    const databaseID = process.env.REACT_APP_APPWRITE_DATABASE_ID;
-    const mspCollectionID = process.env.REACT_APP_APPWRITE_MSP_COLLECTION_ID;
 
 
     useEffect(() => {
@@ -28,7 +23,7 @@ const MspCountComponent = ({ userRole, mspList }) => {
         const getCountMsps = async (userRole, mspList) => {
                try {
                     if (userRole === 'admin'){
-                        databases.listDocuments(
+                        /*databases.listDocuments(
                                 databaseID,
                                 mspCollectionID,
                                 [],
@@ -38,7 +33,7 @@ const MspCountComponent = ({ userRole, mspList }) => {
                           })
                           .catch(error => {
                             console.error(error);
-                          });
+                          });*/
                       } else if (userRole === 'mssp' && mspList != null){
                             setMspCount(mspList.length);
                             setTotalLicencesCount(mspList.reduce((sum, msp) => sum + msp.purchased_licenses, 0));
