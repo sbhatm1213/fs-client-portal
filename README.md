@@ -1,70 +1,25 @@
-# Getting Started with Create React App
+**FS CLIENT PORTAL**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Authentication methods provided:**
+1) Google OAuth : Used "react-oauth/google" npm react module ; Token verification done on backend using pip packages like "google-auth" "google-auth-oauthlib" etc
+2) Azure OAuth : Used "azure/msal-browser" and "azure/msal-react" npm react modules ; Token verification done on backend using pip packages like "msal" etc
 
-## Available Scripts
+   Once token verification is successful, User will be created in our system
 
-In the project directory, you can run:
+**Heimdal Customers data:**
+1) To pull data of cutomers from Heimdal this is the API I used : https://rc-dashboard.heimdalsecurity.com/api/heimdalapi/customers?customerId={customer-id}
+2) Full code to pull data is in `heimdal/customers_data_loader.py`
+3) As per what I've understood from Heimdal UI, "RESELLER" type is MSP for us and "CORP" type is Client for us - so this is what you see in the code too, based on the type I find what the customer is
 
-### `npm start`
+**JWT for all APIs used after login of a user**
+1) I have kept all APIs that will return data to UI protected with "jwt_required" - code in `app/decorators.py`
+2) Flow is - When a user logs in, JWT will be generated for him - code in `app/jwt.py`
+3) The JWT will be sent to frontend - where it's stored in sessionstorage on browser - then this is sent in Authorization header while making API calls - In the react code `services/Authprovider`you can check that I have made all axios requests to send JWT auth header, you dont need to do it for every API call
+4) Example of API returning data to UI - dashboarddata (all MSP and Client data shown on the dashboard)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
