@@ -30,7 +30,12 @@
 4) Crud/ORM kind of code in `services.py`
 5) Custom functions, all other logic in `main.py` 
 
-
+**Deployment**
+1) Python3, Node20, PIP, NPM, PostgreSQL14, Nginx - I installed these on the server
+2) Nginx config - `/etc/nginx/sites-available/fs-client-portal`
+3) I'm using Gunicorn to run the Flask application, gunicorn config - `/etc/systemd/system/fs_client_portal.service` 
+4) Flask `Gitlab-CI` will - `copy code to server, activate venv, install pip packages, do database migrations, restart fs_client_portal service`
+5) React `Gitlab-CI` will - `copy code to server, install npm modules, do npm build, copy build to backend folder, restart fs_client_portal service`
 
 
 
